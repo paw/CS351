@@ -27,7 +27,8 @@
         }
 
         * {box-sizing:border-box;}
-        body {font-family: 'Fairfax HD',"Lucida Console", Monaco, monospace; background:#000;color:#f1f1f1;font-size: 18px;line-height:1.2em;text-shadow:3px 2px 0 #30C; margin: 0;}
+        html { overflow-x: hidden; }
+        body {font-family: 'Fairfax HD',"Lucida Console", Monaco, monospace; background:#000;color:#f1f1f1;font-size: 18px;line-height:1.2em; margin: 0;}
         h1, h2, h4, h5 {text-shadow: 3px 2px blue;}
         h1 { font-size: 2em; }
         .header h1 { margin: 16px auto 10px; font-size: 3.5em;line-height: 1em;}
@@ -164,10 +165,10 @@
           border-bottom: 1px dotted black;
           transition: 0.3s;
         }
-        
         .tooltip .tooltiptext {
             pointer-events: none;
-            width: 200px;
+            width: max-content;
+            max-width: 400px;
             background-color: #222;
             color: #fff;
             text-align: center;
@@ -177,13 +178,12 @@
             z-index: 1;
             bottom: 125%;
             left: 50%;
-            margin-left: -100px;
+            transform: translateX(-50%);
             opacity: 0;
             transition: 0.3s opacity;
             text-shadow:3px 2px 0 #000;
             box-shadow: 3px 3px 0 #000;
         }
-        
         .tooltip .tooltiptext::after {
             content: "";
             position: absolute;
@@ -194,7 +194,12 @@
             border-style: solid;
             border-color: #222 transparent transparent transparent;
         }
-        
+        /*.grid.col2 li:nth-child(even) .tooltiptext {
+            left: 10%;
+        }
+        .grid.col2 li:nth-child(even) .tooltiptext::after {
+            left: 55%;
+        }*/
         .tooltip:hover .tooltiptext, .tooltip:focus .tooltiptext {
             visibility: visible;
             pointer-events: auto;
@@ -324,10 +329,16 @@
             max-width: 100%;
             height: auto;
             margin: auto;
+            color: #999;
+        }
+        footer .parc {
+            font-size: 0.6em;
+            color: #999;
         }
         ::selection {
             background: #30C;
             color: #f1f1f1;
+            text-shadow:3px 3px 0 #20007e;
         }
         .noselect {
             -webkit-touch-callout: none; /* iOS Safari */
@@ -361,9 +372,20 @@
             .grid.col2 {
                 grid-template-columns: 1fr;
             }
+            .col2 .grid-section.full {
+                grid-column: span 1;
+            }
             .grid.col2 li:nth-child(odd), .grid.col2 li:nth-child(even) {
                 margin-left: 0 !important;
                 margin-right: 0 !important;
+            }
+            section .tooltip .tooltiptext {
+                max-width: calc(90vw - 30%);
+                left: 0px;
+                transform: none;
+            }
+            section .tooltip .tooltiptext::after {
+                left: 20px;
             }
         }
         .hide {
@@ -381,35 +403,48 @@
         <section class="center full">
             <div class="grid col2">
                 <div class="grid-section">
-                    <h2 class="fancy h3">CS 351 HOMEWORK</h2>
+                    <h2 class="fancy parc">CS 351 HOMEWORK</h2>
                     <ol class="grid col2">
                         <li><b>Create Homepage:</b> <b class="check">✓</b></li>
-                        <li class="disabled"><b>Dynamic Product List:</b> <a href="./cgi-bin/HW2/two.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW2/two.txt" tabindex="-1">source</a></li>
-                        <li class="disabled"><b>"Hello World" in Perl:</b> <a href="./cgi-bin/HW3/three.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW3/three.txt" tabindex="-1">source</a></li>
-                        <li class="disabled"><b>JavaScript Function:</b> <a href="./cgi-bin/HW4/four.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW4/four.txt" tabindex="-1">source</a></li>
-                        <li class="disabled"><b>JavaScript Function:</b> <a href="./cgi-bin/HW5/five.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW5/five.txt" tabindex="-1">source</a></li>
-                        <li class="disabled"><b>Online Store:</b> <a href="./cgi-bin/HW6/six.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW6/six.txt" tabindex="-1">source</a></li>
-                        <li class="disabled"><b>Scottblog:</b> <a href="./cgi-bin/HW7/seven.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW7/seven.txt" tabindex="-1">source</a></li>
-                        <li class="disabled"><b>Bootstrap Online Store:</b> <a href="./cgi-bin/HW8/eight.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW8/eight.txt" tabindex="-1">source</a></li>
-                        <li class="disabled"><b>Bootstrap/Angular Online Store:</b> <a href="./cgi-bin/HW9/nine.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW9/nine.txt" tabindex="-1">source</a></li>
-                        <li class="disabled"><b>Leafletjs Colored Point Controls:</b> <a href="./cgi-bin/HW10/ten.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW10/ten.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>Dynamic Product List:</b> <a href="./cgi-bin/HW2/two.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW2/two.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>"Hello World" in Perl:</b> <a href="./cgi-bin/HW3/three.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW3/three.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>JavaScript Function:</b> <a href="./cgi-bin/HW4/four.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW4/four.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>JavaScript Function:</b> <a href="./cgi-bin/HW5/five.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW5/five.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>Online Store:</b> <a href="./cgi-bin/HW6/six.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW6/six.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>Scottblog:</b> <a href="./cgi-bin/HW7/seven.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW7/seven.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>Bootstrap Online Store:</b> <a href="./cgi-bin/HW8/eight.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW8/eight.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>Bootstrap/Angular Online Store:</b> <a href="./cgi-bin/HW9/nine.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW9/nine.txt" tabindex="-1">source</a></li>
+                        <li class="disabled noselect nofocus"><b>Leafletjs Colored Point Controls:</b> <a href="./cgi-bin/HW10/ten.cgi" tabindex="-1">live</a> / <a href="./cgi-bin/HW10/ten.txt" tabindex="-1">source</a></li>
                     </ol>
                 </div>
                 <div class="grid-section">
-                    <h2 class="fancy h3">OTHER</h2>
-                    <img src="./img/cats.png">
-                    <p><b class="fancy">last updated:</b> jan. 19, 2024</p>
-                    <ul class="grid col2 hide">
-                        <li><a href="./one">one</a></li>
-                        <li><a href="./two">two</a></li>
-                        <li><a href="./three">three</a></li> 
-                        <li><a href="./four">four</a></li>  
+                    <h2 class="fancy parc">RANDOM FUN STUFF</h2>
+                    <ul class="grid col2">
+                        <li><a href="https://www.neopets.com/help/html1.phtml" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">It's all thanks to Neopets introducing me to HTML in the early 2000s</span>How I Started Programming</a></li>
+                        <li><a href="https://github.com/microsoft/PowerToys" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Freeware System Utilities for Windows</span>Microsoft PowerToys</a></li>
+                        <li><a href="https://www.netlify.com/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">My current favorite free web host</span>Netlify</a></li>
+                        <li><a href="https://neocities.org/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Geocities-inspired free web host</span>Neocities</a></li>
+                        <li><a href="https://www.photopea.com/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Photoshop clone that runs in your browser</span>Photopea</a></li>
+                        <li><a href="https://inkscape.org/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Open source SVG editor</span>Inkscape</a></li>
+                        <li><a href="https://icomoon.io/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Create free icon fonts for your sites</span>Icomoon</a></li>
+                        <li><a href="https://transfonter.org/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Convert font files for use on the web</span>Transfonter</a></li>
+                        <li><a href="https://atomiks.github.io/tippyjs/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Interactive Tooltips Library</span>Tippy.js</a></li>
+                        <li><a href="https://barba.js.org/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Page Transition Library</span>Barba.js</a></li>
+                        <li><a href="https://gifcities.org/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">The GeoCities Animated GIF Search Engine</span>GifCities</a></li>
+                        <li><a href="https://acme.sh" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Shell script for free website certs</span>ACME.sh</a></li>
+                        <li><a href="https://www.kreativekorp.com/software/fonts/index.shtml" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Nice fonts, including recreations of fonts from Apple II, MacOS Classic, COMMODORE 64, etc.</span>Fonts by Kreative Software</a></li>
+                        <li><a href="https://userstyles.world/" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">My favorite repository of Userstyles</span>UserStyles.world</a></li>
                     </ul>
+                </div>
+                <div class="grid-section full">
+                    <img src="./img/cats.png" alt="Cats playing cards">
+                    <p><b class="fancy">last updated:</b> jan. 19, 2024</p>
                 </div>
             </div>
         </section>
         <footer class="center full footer">
-            <a href="mailto:sullivb@sunypoly.edu" class="imglink tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">SEND ME AN EMAIL</span><img src="./img/email.gif"></a>
+            <a href="mailto:sullivb@sunypoly.edu" class="imglink tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Email Me!</span><img src="./img/email.gif" alt="3D @ Gif"></a>
+            <p class="hide parc">&copy; Briar 2024</p>
         </footer>
     </main>
 </body>
