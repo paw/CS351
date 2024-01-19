@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Briar's Stuff</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link rel="preload" href="./fonts/ParcPlace.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="./fonts/FairfaxHD.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+
+    <style>
+        @font-face {
+            font-family: 'Parc Place';
+            src: url('./fonts/ParcPlace.woff2') format('woff2'),
+                url('./fonts/ParcPlace.woff') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Fairfax HD';
+            src: url('./fonts/FairfaxHD.woff2') format('woff2'),
+                url('./fonts/FairfaxHD.woff') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {box-sizing:border-box;}
+        body {font-family: 'Fairfax HD',"Lucida Console", Monaco, monospace; background:#000;color:#f1f1f1;font-size: 18px;line-height:1.2em;text-shadow:3px 2px 0 #30C; margin: 0;}
+        h1, h2, h4, h5 {text-shadow: 3px 2px blue;}
+        h1 { font-size: 2em; }
+        .header h1 { margin: 16px auto 10px; font-size: 3.5em;line-height: 1em;}
+        .header { margin: 1.5em 0.5em 1.2em; }
+        .footer { margin: 1.5em auto 1em; }
+        h2 { font-size: 1.3em; }
+        h3, h2.subheader { font-size: 1.1em; color: #888;font-weight:normal; text-shadow: 3px 2px darkblue;/*#14328a;*/ }
+        h4 { font-size: 1em; }
+        h5 { font-size: 0.83em; }
+        h6 { font-size: 0.67em; }
+        main {display: flex; height: auto; max-width: 100%; width: 1200px; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center; margin: auto;padding: 10px;}
+        section { max-width: 100%; }
+        .block { display: block; }
+        .centered { margin: 1.5em auto; }
+        .center { text-align: center; }
+        .no-margin {
+            margin: 0;
+        }
+        hr.divider {
+            margin: 3em auto;
+            border: none;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(-90deg, red, #f42069, blue, #b4d455, yellow);
+            position: relative;
+        }
+        hr.divider::before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background: repeating-linear-gradient(
+              90deg,
+              transparent,
+              transparent 5px,
+              #000 5px,
+              #000 10px
+            );
+        }
+        hr.divider::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(-90deg, #000 0%, transparent 25%, transparent 75%, #000 100%);
+        }
+        a, a:visited { color: #ff6; text-decoration: none; transition: 0.3s color; position: relative; padding-bottom: 4px;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+        a:not(.imglink)::before {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 2px;
+            background-color: red;
+            transition: background-color 0.5s, width 0.5s;
+            margin: auto;
+        }
+        a:not(.imglink)::after {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+            width: 0%;
+            height: 2px;
+            background-color: blue;
+            transition: background-color 0.2s, width 0.2s;
+            margin: auto;
+        }
+        a:hover, a:active, a:focus { color: white; text-shadow: 3px 2px #900; }
+        a:hover::after, a:active::after, a:focus::after {
+            background-color: blue;
+            width: 100%;
+            transition: background-color 0.5s, width 0.5s;
+        }
+        a:hover::before, a:active::before, a:focus::before {
+            background-color: red;
+            width: 0%;
+            transition: background-color 0.2s, width 0.2s;
+        }
+        code {
+            background: #080a8b;
+            display: block;
+            padding: 0.2em 0.5em;
+            font-weight: bold;
+            white-space: pre;
+            color: #fff;
+            border-radius: 0.2em;
+            border: 0.5em double rgba(255,255,255,0.2);
+        }
+        textarea.code {
+          background: #080a8b;
+          display: block;
+          padding: 0.2em 0.5em;
+          font-weight: bold;
+          white-space: pre;
+          color: #fff;
+          border-radius: 0.2em;
+          border: 0.5em double rgba(255,255,255,0.2);
+          width: 100%;
+          resize: none;
+          max-height: 100px;
+          overflow: auto;
+        }
+        code.inline {
+            display: inline-block;
+        }
+        .p-850 {
+            width: 850px;
+            max-width: 100%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .nav { 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+        .nav a, .nav a:visited { color: red; padding: 0; text-shadow: 3px 2px blue; margin: auto 10px; }
+        .nav a::after, .nav a::before { display: none; }
+        .nav a:hover, .nav a:active, .nav a:focus { color: yellow; }
+        .flex { display: flex; flex-wrap: wrap; }
+        .flex-spaced { justify-content: space-evenly; }
+        ::selection { background: #222; color: #666 }
+        .bigger { font-size: 20px; }
+        .tooltip {
+          position: relative;
+          display: inline-block;
+          border-bottom: 1px dotted black;
+          transition: 0.3s;
+        }
+        
+        .tooltip .tooltiptext {
+            pointer-events: none;
+            width: 200px;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: 0.3s opacity;
+            text-shadow:3px 2px 0 #000;
+            box-shadow: 3px 3px 0 #000;
+        }
+        
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: #222 transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltiptext, .tooltip:focus .tooltiptext {
+            visibility: visible;
+            pointer-events: auto;
+            opacity: 1;
+        }
+        .grid {
+            display: grid;
+            max-width: 100%;
+        }
+        .grid.col2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .grid.col3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .grid.auto {
+            grid-template-columns: repeat(auto-fill, 10%);
+        }
+        .svg-list svg {
+            font-size: 10em;
+        }
+        .svg-info {
+            text-align: left;
+        }
+        .flex-center {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .grid-section {
+            padding: 10px;
+            border-radius: 5px;
+            text-shadow: none;
+            font-weight: normal;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+        .grid-section.col2 {
+            grid-column: 2 / 4;
+        }
+        .col2 .grid-section.full {
+            grid-column: span 2;
+        }
+        .grid.col2 li:nth-child(odd) {
+            margin-right: 0.5em;
+        }
+        .grid.col2 li:nth-child(even) {
+            margin-left: 0.5em;
+        }
+        .grid.col2 ol li:nth-child(odd) {
+            margin-right: 1.5em;
+        }
+        .grid.col2 ol li:nth-child(even) {
+            margin-left: 1.5em;
+        }
+        .flex-section {
+            padding: 10px;
+            background: rgba(20,20,20);
+            border-radius: 5px;
+            text-shadow: none;
+            font-weight: normal;
+            margin: 10px;
+            flex: 0 31%;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .full {
+            flex: 1 100%;
+        }
+        .fancy, ol li:before {
+            position: relative;
+            color: yellow;
+            text-shadow: 3px 2px 0 crimson;
+            padding-bottom: 15px;
+        }
+        .fancy.dl {
+            padding: inherit;
+            margin: 0;
+        }
+        h2.fancy {
+            color: white;
+            text-shadow: 3px 2px 0 blue;
+            font-size: 1.4em;
+            letter-spacing: 2px;
+        }
+        h2.fancy::after, main::after {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, red, #f42069, blue, blue, #b4d455, yellow);
+        }
+        main::after {
+            position: fixed;
+        }
+        ul, ol {
+            margin: 0;
+            text-align: left;
+        }
+        ul li, ol li {
+            margin-bottom: 0.5em;
+        }
+        ol {
+            counter-reset: li;
+            list-style-type: none;
+        }
+        ol li{
+            position:relative;
+        }
+        ol li:before {
+            content: '#'counter(li)'.';
+            counter-increment: li;
+            position:absolute;
+            right:100%;
+            margin-right:0.2em;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+        .check {
+            color: lime;
+            font-size: 1.5em;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: auto;
+        }
+        ::selection {
+            background: #30C;
+            color: #f1f1f1;
+        }
+        .noselect {
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* supported by Chrome, Edge, Opera, Firefox */
+        }
+
+        .parc {
+            font-family: 'Parc Place', "Lucida Console", Monaco, monospace;
+            font-weight: 500;
+            font-style: normal;
+        }
+        
+        @media (max-width: 900px) {
+            .grid.col2 {
+                grid-template-columns: 1fr;
+            }
+            .grid.col2 li:nth-child(odd), .grid.col2 li:nth-child(even) {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+        }
+        .hide {
+            display: none !important;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.3 !important;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header class="center full header h3"><h1 class="fancy parc">Briar's Stuff</h1></header>
+        <section class="center full">
+            <div class="grid col2">
+                <div class="grid-section">
+                    <h2 class="fancy h3">CS 351 HOMEWORK</h2>
+                    <ol class="grid col2">
+                        <li><b>Create Homepage:</b> <b class="check">✓</b></li>
+                        <li class="disabled"><b>Dynamic Product List:</b> <a href="./cgi-bin/HW2/two.cgi">live</a> / <a href="./cgi-bin/HW2/two.txt">source</a></li>
+                        <li class="disabled"><b>"Hello World" in Perl:</b> <a href="./cgi-bin/HW3/three.cgi">live</a> / <a href="./cgi-bin/HW3/three.txt">source</a></li>
+                        <li class="disabled"><b>JavaScript Function:</b> <a href="./cgi-bin/HW4/four.cgi">live</a> / <a href="./cgi-bin/HW4/four.txt">source</a></li>
+                        <li class="disabled"><b>JavaScript Function:</b> <a href="./cgi-bin/HW5/five.cgi">live</a> / <a href="./cgi-bin/HW5/five.txt">source</a></li>
+                        <li class="disabled"><b>Online Store:</b> <a href="./cgi-bin/HW6/six.cgi">live</a> / <a href="./cgi-bin/HW6/six.txt">source</a></li>
+                        <li class="disabled"><b>Scottblog:</b> <a href="./cgi-bin/HW7/seven.cgi">live</a> / <a href="./cgi-bin/HW7/seven.txt">source</a></li>
+                        <li class="disabled"><b>Bootstrap Online Store:</b> <a href="./cgi-bin/HW8/eight.cgi">live</a> / <a href="./cgi-bin/HW8/eight.txt">source</a></li>
+                        <li class="disabled"><b>Bootstrap/Angular Online Store:</b> <a href="./cgi-bin/HW9/nine.cgi">live</a> / <a href="./cgi-bin/HW9/nine.txt">source</a></li>
+                        <li class="disabled"><b>Leafletjs Colored Point Controls:</b> <a href="./cgi-bin/HW10/ten.cgi">live</a> / <a href="./cgi-bin/HW10/ten.txt">source</a></li>
+                    </ol>
+                </div>
+                <div class="grid-section">
+                    <h2 class="fancy h3">OTHER</h2>
+                    <img src="./img/cats.png">
+                    <p><b class="fancy">last updated:</b> jan. 19, 2024</p>
+                    <ul class="grid col2 hide">
+                        <li><a href="./one">one</a></li>
+                        <li><a href="./two">two</a></li>
+                        <li><a href="./three">three</a></li> 
+                        <li><a href="./four">four</a></li>  
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <footer class="center full footer">
+            <a href="mailto:sullivb@sunypoly.edu" class="imglink tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">SEND ME AN EMAIL</span><img src="./img/email.gif"></a>
+        </footer>
+    </main>
+</body>
+</html>
