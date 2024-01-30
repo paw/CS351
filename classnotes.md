@@ -30,5 +30,5 @@ ______
 
 ## links
 
-- https://stackoverflow.com/questions/11264470/how-to-post-content-with-an-http-request-perl
-- 
+- [POST requests](https://stackoverflow.com/questions/11264470/how-to-post-content-with-an-http-request-perl)
+- [HTML TEMPLATES](https://metacpan.org/pod/HTML::Template)
