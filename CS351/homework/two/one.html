@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        *{box-sizing: border-box;}
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            background: #ccc;
+        }
+        main {
+            padding: 20px;
+            display: block;
+            width: 800px;
+            max-width: 100%;
+            margin: 2em auto;
+            background: #fff;
+        }
+        #added {
+            margin: 20px 0;
+        }
+        #added:empty::after {
+            content: 'You have not added any products.';
+            display: block;
+        }
+        table {
+            width: 100%;
+            margin: 1em;
+        }
+        table th {
+            background: #eee;
+            border: 1px solid #000;
+        }
+        table tr {
+            width: 50%;
+        }
+        table tr {
+            border: 1px solid #000;
+        }
+        .hide { display:none !important;}
+    </style>
+    <script>
+
+        var products = new Array();
+        var container, tbody;
+
+        class Product {
+            constructor(name,cat) {
+                this.name = name;
+                this.category = cat;
+            }
+        }
+        function addItem() {
+            pname = document.getElementById("product");
+            cat = document.querySelector("input[name='category']:checked");
+            if (pname.value == null) {
+                alert("Write something, dummy!");
+            } else {
+                prod = new Product(pname.value.replace(/([^\W_]+[^\s-]*) */g, (x) => x.toUpperCase()),cat.value)
+                products.push(prod);
+                document.getElementById("added").innerHTML += "<li>" + prod.name + " in category " + prod.category + "</li>"
+            }
+            pname.value = "";
+            document.querySelector("input[name='category']").checked = true;
+            pname.focus();
+        }
+        function createTable() {
+            products.sort(compareByName);
+            document.getElementById("added").classList.toggle("hide");
+            container.forEach((e) => e.classList.toggle("hide"));
+            products.forEach((element) => tbody.innerHTML += "<tr><td>" + element.name + "</td><td>" + element.category + "</td></tr>");
+            document.querySelectorAll("#stepone button").forEach((e) => e.disabled = 'disabled');
+            document.querySelectorAll("#steptwo button").forEach((e) => e.removeAttribute("disabled"));
+        }
+        function compareByName(a, b) {
+            if ( a.name < b.name ){
+                return -1;
+            }
+            if ( a.name > b.name ){
+                return 1;
+            }
+            return 0;
+        }
+        function compareByCategory(a, b) {
+            if ( a.category < b.category ){
+                return -1;
+            }
+            if ( a.category > b.category ){
+                return 1;
+            }
+            return 0;
+        }
+        function sortTable(type) {
+            alert("type is " + type);
+            tbody.innerHTML = '<tr><th>Name</th><th>Category</th></tr>';
+            if (type === 1) {
+                alert("sorted by category");
+                products.sort(compareByCategory);
+            } else {
+                alert("sorted by name");
+                products.sort(compareByName);
+            }
+            products.forEach((element) => tbody.innerHTML += "<tr><td>" + element.name + "</td><td>" + element.category + "</td></tr>");
+            return false;
+        }
+
+        
+        // add event listeners to items
+        document.addEventListener("DOMContentLoaded", function() {
+            container = document.querySelectorAll(".step");
+            tbody = document.querySelector("#table tbody");
+
+            document.getElementById("product").focus();
+            document.getElementById("addproduct").addEventListener("click", addItem);
+            document.getElementById("fin").addEventListener("click", createTable);
+            document.getElementById("sortname").addEventListener("click", function() {sortTable(0)});
+            document.getElementById("sortcat").addEventListener("click", function() {sortTable(1)});
+        });
+
+    </script>
+</head>
+<body lang="en">
+    <main>
+    <h1>Dynamic Product List</h1>
+        <section id="stepone" class="step">
+            <label for="product">Product Name: </label><input id="product" type="text"><br/>
+            <label for="categorychoice">Category: </label>
+            <div id="categorychoice">
+                <label for="home"><input type="radio" id="home" name="category" value="HOME" checked>Home</input>
+                <label for="food"><input type="radio" id="food" name="category" value="FOOD">Food</input>
+            </div>
+            <br/>
+            <button id="addproduct">Add Product</button> <button id="fin">Finish Adding Products</button>
+        </section>
+        <ol id="added"></ol>
+        <section id="steptwo" class="step hide"><button id="sortname" disabled="disabled">Sort by Name</button> <button id="sortcat" disabled="disabled">Sort by Category</button></section>
+        <section id="table" class="step hide">
+            <table id="products">
+                <tbody>
+                    <tr><th>Name</th><th>Category</th></tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
