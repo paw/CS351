@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+<title><TMPL_VAR NAME=TITLE></title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body lang="en" class="bg-dark text-white">
+    <main class="m-2">
+        <div class="card-group">
+        <TMPL_LOOP NAME=CARDS>
+            <div class="card bg-light text-dark border border-success rounded m-1">
+                <div class="card-body">
+                    <h5 class="card-title"><TMPL_VAR NAME=TITLE></h5>
+                    <p class="card-text"><TMPL_VAR NAME=BODY></p>
+                </div>
+            </div>
+        </TMPL_LOOP>
+        </div>
+    </main>
+</body>
+</html>
