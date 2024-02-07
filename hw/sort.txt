@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<head>
+    <title>Homework #4: Sorting Function</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        body {
+            background: #ccc;
+        }
+        .rounded-left {
+            border-radius: 0px !important;
+            border-top-left-radius: .25rem !important;
+            border-bottom-left-radius: .25rem !important;
+        }
+        main.main {
+            padding: 20px;
+            display: block;
+            width: 800px;
+            max-width: 100%;
+            margin: 2em auto;
+        }
+        label.input-group-text {
+            font-weight: bold;
+            background: rgb(var(--bs-secondary-rgb),0.2);
+        }
+        #table-text {
+            width: 100%;
+            height: 4em;
+        }
+        #added {
+            margin: 20px 0;
+        }
+        #added::before {
+            margin-left: -30px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            content: 'Products Added:';
+            display: block;
+            font-size: 1.2em;
+        }
+        #added:empty::before {
+            content: 'You have not added any products.';
+            font-style: italic;
+            color: var(--bs-secondary);
+        }
+        .hide { display:none !important;}
+    </style>
+    <script>
+        
+        //simple function to clear the product table's contents
+        function clearTable() {
+            document.querySelector("#table tbody").innerHTML = '';
+        }
+
+        //fuction to compare 2 strings
+        function compareString(a, b) {
+            // localeCompare docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
+            if (a.localeCompare(b, 'en', { sensitivity: 'base' }) <= -1){
+                // a comes before b
+                return -1;
+            } else if (a.localeCompare(b, 'en', { sensitivity: 'base' }) >= 1){
+                // a comes after b
+                return 1;
+            } else {
+                // they're the same
+                return 0;
+            }
+        }
+        //Function to compare by cost
+        function compareByCost(a, b) {
+           if (parseFloat(a) < parseFloat(b)) {
+                return -1;
+           } else if (parseFloat(a) > parseFloat(b)) {
+                return 1;
+           } else {
+                return 0;
+           }
+        }
+
+        function makeTable(table, json) {
+            let USDollar = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
+
+            for (var i = 0; i < json.products.length; i++) {
+                var tr = document.createElement('tr');
+                tr.setAttribute("data-id",json.products[i].id );
+                tr.setAttribute("data-name",json.products[i].name);
+                tr.setAttribute("data-category",json.products[i].category);
+                tr.setAttribute("data-cost",json.products[i].cost);
+                tr.setAttribute("data-quantity",json.products[i].quantity);
+
+
+                tr.innerHTML = "<td>" + json.products[i].id + "</td>";
+                tr.innerHTML += "<td data-name=\"name\">" + json.products[i].name + "</td>";
+                tr.innerHTML += "<td>" + json.products[i].category + "</td>";
+                tr.innerHTML += "<td>" + USDollar.format(json.products[i].cost) + "</td>";
+                tr.innerHTML += "<td>" + json.products[i].quantity + "</td>";
+                tr.innerHTML += "<td><ul></ul></td>";
+                if (!(json.products[i].organic === undefined) && json.products[i].organic == true) {
+                    tr.querySelector("td:last-child ul").innerHTML += "<li>Certified Organic</li>";
+                }
+                if (!(json.products[i].variety === undefined)) {
+                    tr.querySelector("td:last-child ul").innerHTML += "<li>Variety: " + json.products[i].variety + "</li>";
+                }
+                if (!(json.products[i].colors === undefined)) {
+                    tr.querySelector("td:last-child ul").innerHTML += "<li>Colors: " + json.products[i].colors + "</li>";
+                }
+                if(!(json.products[i].flavors === undefined)) {
+                    tr.querySelector("td:last-child ul").innerHTML += "<li>Flavors: " + json.products[i].flavors + "</li>";
+                }
+                if(!(json.products[i].animals === undefined)) {
+                    tr.querySelector("td:last-child ul").innerHTML += "<li>Made for: " + json.products[i].animals + "</li>";
+                }
+                table.appendChild(tr);
+            }
+        }
+
+        function sortByAttribute(table, attr) {
+            // for most we can just compare the attribute values...
+            [...table.children]
+            .sort((a, b) => compareString(a.getAttribute(attr), b.getAttribute(attr)))
+            .forEach(node => table.appendChild(node));
+        }
+        function sortByPrice(table) {
+            // ...but in the case of cost it needs to be compared numerically
+            [...table.children]
+            .sort((a, b) => compareByCost(a.getAttribute("data-cost"), b.getAttribute("data-cost")))
+            .forEach(node => table.appendChild(node));
+        }
+
+        async function getJSON() {
+            // fetching our json file
+            return fetch('./products.json')
+                .then((response)=>response.json())
+                .then((responseJson)=>{return responseJson});
+        }
+
+        async function pageLoad() {
+            // We don't want to do anything until we get the JSON.
+            json = await this.getJSON();
+            var table = document.querySelector("#table tbody");
+            makeTable(table,json); // create the table
+            document.querySelector("#buttons").classList.remove("hide");
+            document.querySelectorAll("#buttons button").forEach((element) => element.disabled = false );
+            document.getElementById("sort-name").addEventListener("click", function() { sortByAttribute(table,"data-name") });
+            document.getElementById("sort-category").addEventListener("click", function() { sortByAttribute(table,"data-id"); sortByAttribute(table,"data-category") });
+            document.getElementById("sort-cost").addEventListener("click", function() { sortByPrice(table) });
+        }
+        
+        // Call our async function when the DOM is ready.
+        document.addEventListener("DOMContentLoaded", function() {
+            pageLoad();
+        });
+
+    </script>
+</head>
+<body lang="en">
+    <main class="main container mt-2 mb-2 py-3 px-4 bg-light text-dark rounded">
+    <h1>Sort Function</h1>
+    <p>Reads unsorted product information from a JSON file on server, populates a table with the JSON data, then lets you hit buttons to sort stuff in various ways.</p>
+    <hr>
+    <section id="table">
+        <div id="buttons" class="hide">
+            <button id="sort-name" class="btn btn-secondary m-1" disabled>Sort by Name</button>
+            <button id="sort-category" class="btn btn-secondary m-1" disabled>Sort by Category</button>
+            <button id="sort-cost" class="btn btn-secondary m-1" disabled>Sort by Price</button>
+        </div>
+        <table id="products" class="table border mt-2">
+            <thead class="table-dark thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Additional Information</th>
+                </tr>
+              </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+    </main>
+</body>

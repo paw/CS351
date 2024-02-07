@@ -25,6 +25,8 @@ array of strings = declared with @variable
 hash = declared with
 - to get 
 
+- work with store5 (2/1)
+- command to check what was recently edited in the week files: ls -lrt 
 
 ______
 
@@ -32,3 +34,5 @@ ______
 
 - [POST requests](https://stackoverflow.com/questions/11264470/how-to-post-content-with-an-http-request-perl)
 - [HTML TEMPLATES](https://metacpan.org/pod/HTML::Template)
+- [CGI & SQLite](https://github.com/patrickmoffitt/ble_sensor_cgi)
+- [AJAX/Fetch](https://medium.com/@reemshakes/is-ajax-getting-replaced-by-fetch-api-55207234793f)
