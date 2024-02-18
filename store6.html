@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CS351 Form Store</title>
+<meta charset="utf-8">
+</head>
+
+<script src="PMS/jquery-3.1.1.js"></script>
+
+<script>
+
+function doclicktestcase3() {
+        $("#ajaxstuff").hide();
+        $("#Form").show();
+}
+function doclicktestcase() {
+alert('Form elements=' );
+var y = document.getElementById("Form");
+var x = y.elements.length;
+alert('Form elements=' + x);
+  var text = "";
+  var i;
+  for (i = 0; i < y.length; i++) {
+    text += document.forms["Form"].elements[i].value + "<br>";
+    // alert('ho' + text);
+  }
+  //var val = getRadioVal( document.forms["Form"], 'testcase' );
+  var val = getRadioVal( y, 'testcase' );
+  //alert(val); //you can pass this value as parameter
+  alert('doclicktestcase ' + val); //you can pass this value as parameter
+  sendRequest(val);
+  return true;
+}
+function doclicktestcase2() {
+alert('Form doclicktestcase2' );
+var y = document.getElementById("listElements");
+var x = y.length;
+alert('listElements elements=' + x);
+  var text = "";
+  var text2 = "";
+  var i;
+  for (i = 0; i < y.length; i++) {
+    text = document.elememts["listElements"].elements[i].value + "<br>";
+    text2 = document.elememts["listElements"].elements[i].name + "<br>";
+     alert('ho:' + text + ':ho2:'+text2+':');
+  }
+  //var val = getRadioVal( document.forms["Form"], 'testcase' );
+  //var val = getRadioVal2( document.forms["cbexampleForm"], 'item' );
+  var val = getRadioVal2( y, 'item' );
+  //alert(val); //you can pass this value as parameter
+  alert('doclicktestcase2' + val); //you can pass this value as parameter
+  sendRequest2(val);
+  return true;
+}
+
+function getRadioVal2(form, name) {
+    var val;
+	alert('getRadioVal2=' + name);
+	document.getElementsByName(name)
+    //var radios = form.elements[name];
+    // SES CHANGED THIS: var radios = form.elements;
+    // to:
+var radios = $('input[name="item"]')
+alert('radios length='+ radios.length);
+    var itemQuant;  
+    var thisItemName ;
+    var newVal;
+    // loop through list of radio buttons
+    for (var i=0, len=radios.length; i<len; i++) {
+	alert('getRadioVal2=' + i + "name=" + name);
+        if ( radios[i].checked ) { // radio checked?
+           //if( val == '') {
+	    alert("getRadioVal2 checkbox value:" + radios[i].value);
+	    thisItemName = document.getElementsByName(radios[i].value)
+            itemQuant = thisItemName[0].value;
+            //itemQuant = thisItemName.value;
+	    alert("getRadioVal2 item:" + itemQuant);
+            var input = $( "form input:text" );
+	    alert("getRadioVal2 item2:" + input[0].name);
+	    //alert("item:" + thisItemName.name + " has value:" + thisItemName.value);
+           newVal = thisItemName[0].name + ':' + itemQuant;
+           if (typeof val === "undefined") {
+            //val = radios[i].value ; // if so, hold its value in val
+            val = newVal; // if so, hold its value in val
+	   }
+	   else {
+            //var zz = document.getElementById("cbexampleForm");
+	    //thisItemName = zz.getElementsByName(radios[i].value)
+            //itemQuant = thisItemName.value;
+	    //alert("item:" + thisItemName.name + " has value:" + thisItemName.value);
+            //val = radios[i].value + '%3B' + val; // if so, hold its value in val
+            val = newVal + '%3B' + val; // if so, hold its value in val
+           }
+	   alert('found getRadioVal2=' + val);
+           //break; // and break out of for loop
+        }
+    }
+    return val; // return value of checked radio or undefined if none checked
+}
+function getRadioVal(form, name) {
+    var val;
+	alert('getRadioVal=' + name);
+	document.getElementsByName(name)
+    //var radios = form.elements[name];
+    var radios = form.elements;
+alert('radios length='+ radios.length);
+
+    // loop through list of radio buttons
+    for (var i=0, len=radios.length; i<len; i++) {
+	alert('getRadioVal=' + i + "name=" + name);
+        if ( radios[i].checked ) { // radio checked?
+	//alert('Found Checked Radio: value=' + radios[i].value);
+           //if( val == '') {
+           if (typeof val === "undefined") {
+            val = radios[i].value ; // if so, hold its value in val
+	   }
+	   else {
+            val = radios[i].value + '%3B' + val; // if so, hold its value in val
+           }
+	   alert('found getRadioVal=' + val);
+           //break; // and break out of for loop
+        }
+    }
+    return val; // return value of checked radio or undefined if none checked
+}
+
+function createRequestObject() {
+  var req;
+  if (window.XMLHttpRequest) { // Firefox, Safari, Opera...
+    req = new XMLHttpRequest();
+  } else if (window.ActiveXObject) { // Internet Explorer 5+
+    req = new ActiveXObject("Microsoft.XMLHTTP");
+  } else {
+    alert('There was a problem creating the XMLHttpRequest object');
+    req = '';
+  }
+  return req;
+}
+
+// Make the XMLHttpRequest object
+var http = createRequestObject();
+
+var thiscategory;
+
+function sendRequest(mypick) {
+  var now = new Date();
+  thiscategory=mypick;
+  alert('sendRequest mypick=' + mypick);
+  // send in the category of merchandise
+  http.open('get', '/SUNY/CS351/code/cgi-bin/mystore4.cgi?category=' + mypick + '&myfunc=category&nocache='+now.getTime());
+  //http.open('post', '/cgi-bin/mystore4.cgi?category=' + mypick + '&myfunc=category&nocache='+now.getTime());
+  http.onreadystatechange = handleResponse;
+
+alert('send');
+  http.send();
+}
+function sendRequest2(mypick) {
+  var now = new Date();
+  thiscategory=mypick;
+  alert('sendRequest mypick=' + mypick);
+  // send in the category of merchandise
+  http.open('get', '/SUNY/CS351/code/cgi-bin/mystore4.cgi?items=' + mypick + '&myfunc=items&nocache='+now.getTime());
+  http.onreadystatechange = handleResponse2;
+
+  alert('send');
+  http.send();
+}
+
+// gets a confirmation for the order placed
+// including the items and number ordered
+// Notes if there were not enough in inventory
+// that the order was changed to order fewer
+function handleResponse2() {
+  if(http.readyState == 4 && http.status == 200){
+    var response = http.responseText; // Text returned FROM perl script
+      alert("Ordered items " + response);
+    if(response) { // UPDATE ajaxTest content
+      document.getElementById("ajaxstuff").innerHTML = "<B>Your Order</B><br>";
+      var myItems = response.split(";");
+      for (var i = 0; i < myItems.length; i++) {
+        //document.getElementById("ajaxstuff").innerHTML += response;
+        document.getElementById("ajaxstuff").innerHTML += 'Invoice ' + i + 
+		':' + myItems[i] + '<br>';
+      }
+        document.getElementById("ajaxstuff").innerHTML += 
+'<input type="button" id="mybutton" onClick="doclicktestcase3()" value="Confirm Item">'
+    };
+    $("#listElements").hide();
+    $("#cbexampleForm").hide();
+  }
+}
+// The response from asking for a category is a list of elements
+// available for the category of merchandise
+function handleResponse() {
+  if(http.readyState == 4 && http.status == 200){
+    var response = http.responseText; // Text returned FROM perl script
+      alert("Category items " + response);
+    if(response) { // UPDATE ajaxTest content
+      //document.getElementById("ajaxstuff").innerHTML = response;
+    }
+      //alert("AFTER DOjsonData3");
+   //option = new Option(jsonData[i], jsonData[i]);
+        //option = new Option("datfile1", "datfile2");
+        //option = new Option(jsonData[i], "datfile");
+        //$( "#mylistElements" ).append($(option));
+
+
+	var option;
+        var radioBtn;
+	// Expecting something like: snapple-10,coke-12,pepsi-5
+	myvals = response.split(",");
+	var myItems;
+
+radioBtn = $('<table id=mytable ALIGN=LEFT BORDER=4 CELLSPACING=4 CELLPADDING=4 COLS=3 WIDTH=400 BGCOLOR="#66FFFF" NOSAVE>');
+    	radioBtn.appendTo('#listElements');
+//radioBtn = $('<table id=mytable ALIGN=LEFT BORDER=4 CELLSPACING=4 CELLPADDING=4 COLS=3 WIDTH=400 BGCOLOR="#66FFFF" NOSAVE> <tr><td bgcolor=lightgreen colspan=1>Item</td><td bgcolor=lightgreen colspan=1>quantity</td><td bgcolor=lightgreen colspan=1>order</td></tr> <tr><td bgcolor=lightgreen colspan=1>&nbsp;</td><td bgcolor=lightgreen colspan=1>available</td><td bgcolor=lightgreen colspan=1>&nbsp;</td></tr>');
+
+//radioBtn = $('<table id=mytable ALIGN=LEFT BORDER=4 CELLSPACING=4 CELLPADDING=4 COLS=3 WIDTH=400 BGCOLOR="#66FFFF" NOSAVE>');
+    	//radioBtn.appendChild('#listElements');
+radioBtn = $('<tr><td bgcolor=lightgreen colspan=1>Item</td><td bgcolor=lightgreen colspan=1>quantity</td><td bgcolor=lightgreen colspan=1>order</td></tr>');
+    	radioBtn.appendTo('#mytable');
+radioBtn = $('<tr><td bgcolor=lightgreen colspan=1>&nbsp;</td><td bgcolor=lightgreen colspan=1>available</td><td bgcolor=lightgreen colspan=1>&nbsp;</td></tr>');
+    	radioBtn.appendTo('#mytable');
+    	//radioBtn.appendTo('#listElements');
+
+	for (var i = 0; i < myvals.length; i++) {
+		//option = new Option(thiscategory + ';' + myvals[i], 'myselects');
+        //$( "#mylistElements" ).append($(option));
+
+		myItems=myvals[i].split("-");	
+
+                //thiscategory + ':' + myvals[i]  + '" >' + thiscategory +
+		//':' + myvals[i] + '</input>' +
+		//'</td><td><input name="' + thiscategory + ':' + myvals[i] + '">' +
+
+        radioBtn = $('<tr><td colspan=1><input type="checkbox" name="item" value="' +
+                thiscategory + ':' + myItems[0] + '" >' + thiscategory +
+		':' + myItems[0] + '</input></td>' +
+		'<td colspan=1>' + myItems[1] + '</td>' +
+		'<td colspan=1><input name="' + thiscategory + ':' + myItems[0] + '">' +
+  		'</td></tr>');
+    		radioBtn.appendTo('#mytable');
+    		//radioBtn.appendTo('#listElements');
+
+                //myvals[i]  + '" >' + 
+		//myvals[i] + '</input>' +
+		//';' + myvals[i] + '</input>' + 
+ // <input type="radio" name="testcase" value="food" id="food" >food</input>
+
+	}
+	  radioBtn = $('<tr><td><input type="button" id="mybutton" onClick="doclicktestcase2()" value="Select Item"></td><td>&nbsp;</td><td>&nbsp;</td></tr>');
+    	radioBtn.appendTo('#mytable');
+	radioBtn = $('</table>');
+    	radioBtn.appendTo('#listElements');
+
+
+alert('show forms end of handleresponse');
+        $("#listElements").show();
+        $("#cbexampleForm").show();
+        $("#Form").hide();
+    }
+}
+
+</script>
+
+<body>
+
+<form id="cbexampleForm">
+	<!-- <table ALIGN=LEFT BORDER=4 CELLSPACING=4 CELLPADDING=4 COLS=3 WIDTH=400 BGCOLOR="#66FFFF" NOSAVE> -->
+<div id="listElements">
+</div>
+<!-- 	</table> -->
+<!-- <input type="button" id="mybutton" onClick="doclicktestcase2()" value="Select Item"> -->
+</form>
+<!-- 
+<select name="listElements" id="mylistElements" multiple>
+<option value="TEXT">Plain Text</option>
+<option value="HTML">HTML</option>
+</select>
+<br>
+<input type="button" id="mybutton" onClick="doclicktestcase2()" value="Select Item">
+-->
+<br>
+<form id="Form">
+<B>Order Products</B><br>
+ <input type="radio" name="testcase" value="food" id="food" >food</input>
+ <input type="radio" name="testcase" value="beverage" id="beverage" >beverage</input>
+ <input type="radio" name="testcase" value="snack" id="snack" >snack</input>
+<br>
+<input type="button" id="mybutton" onClick="doclicktestcase()" value="Select Type of Product">
+</form>
+
+<div id="ajaxstuff">&nbsp;</div>
+
+<script>
+//We could access the desired element in this way:
+var listelements = document.getElementsByName('listElements');
+var cbexampleform = document.getElementsByName('cbexampleForm');
+alert('js elements=' + listelements);
+$("#listElements").hide();
+$("#cbexampleForm").hide();
+</script>
+
+</body>
+</html>

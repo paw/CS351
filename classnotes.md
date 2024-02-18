@@ -22,7 +22,7 @@ string = declared with $variable
 array of strings = declared with @variable
 - to get params: @arrayname = $q->multi_param('parametername');
 
-hash = declared with
+hash = declared with %
 - to get 
 
 - work with store5 (2/1)
@@ -36,3 +36,6 @@ ______
 - [HTML TEMPLATES](https://metacpan.org/pod/HTML::Template)
 - [CGI & SQLite](https://github.com/patrickmoffitt/ble_sensor_cgi)
 - [AJAX/Fetch](https://medium.com/@reemshakes/is-ajax-getting-replaced-by-fetch-api-55207234793f)
+- [XML post req](https://code.tutsplus.com/create-a-javascript-ajax-post-request-with-and-without-jquery--cms-39195a)
+- https://www.perlmonks.org/?node_id=651544
+- [JSON](https://metacpan.org/pod/JSON), [Data::Dumper](https://metacpan.org/pod/Data::Dumper), [Data::Diver](https://metacpan.org/pod/Data::Diver)
