@@ -1,4 +1,10 @@
 {
+  "categories" : [
+    "Food",
+    "Clothing",
+    "Pets",
+    "Health"
+  ],
     "products": [
       {
         "id": "F-001",
@@ -35,8 +41,16 @@
         "organic" : true
       },
       {
+        "id": "F-005",
+        "name": "Peanut Butter (15oz)",
+        "cost": 1.49,
+        "quantity": 33,
+        "category": "Food",
+        "organic" : false
+      },
+      {
         "id": "C-001",
-        "name": "Raglan T-Shirt (B&W)",
+        "name": "Raglan T-Shirt",
         "cost": 9.00,
         "quantity": 35,
         "category": "Clothing",
@@ -98,6 +112,20 @@
         "name": "Advil (100ct)",
         "cost": 10.99,
         "quantity": 14,
+        "category": "Health"
+      },
+      {
+        "id": "H-002",
+        "name": "Adult Multivitamins (150ct)",
+        "cost": 8.50,
+        "quantity": 77,
+        "category": "Health"
+      },
+      {
+        "id": "H-003",
+        "name": "Child Multivitamins (100ct)",
+        "cost": 7.50,
+        "quantity": 156,
         "category": "Health"
       }
     ]

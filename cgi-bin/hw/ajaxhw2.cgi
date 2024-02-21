@@ -23,6 +23,9 @@ my $raw = $q->param('POSTDATA');
 my $json = JSON->new->allow_nonref;
 my $data = $json->decode( $raw );
 
+print (%{$data->{POST}}->{text}->{text});
+
 for my $i (0 .. @{$data->{POST}}-1) {
-   print ("<b style=\"color:" . @{$data->{POST}}[$i]->{color} . "\">I like " . @{$data->{POST}}[$i]->{name} . " too!</b><br>");
+   my cnt = "var" . $i;
+   print ("<b style=\"color:" . @{$data->{POST}}[$cnt]->{color} . "\">I like " . @{$data->{POST}}[$cnt]->{name} . " too!</b><br>");
 }

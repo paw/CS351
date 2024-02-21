@@ -24,5 +24,10 @@ my $json = JSON->new->allow_nonref;
 my $data = $json->decode( $raw );
 
 for my $i (0 .. @{$data->{POST}}-1) {
-   print ("<b style=\"color:" . @{$data->{POST}}[$i]->{color} . "\">I like " . @{$data->{POST}}[$i]->{name} . " too!</b><br>");
+   if (exists @{$data->{POST}}{text}) {
+      my thing = "var" . $i;
+      print ("<b style=\"color:" . @{$data->{POST}}{$thing}->{color} . "\">" . @{$data->{POST}}{text}->{text} . "</b><br>");
+   } else {
+      print ("<b style=\"color:" . @{$data->{POST}}[$i]->{color} . "\">I like " . @{$data->{POST}}[$i]->{name} . " too!</b><br>");
+   }
 }

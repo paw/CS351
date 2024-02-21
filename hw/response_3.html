@@ -74,10 +74,14 @@
         async function send() {
             var data = "{\n\"POST\": [\n";
             var checked = document.querySelectorAll("input:checked");
+            var text = document.querySelector("#text");
+            if (!(text.isEmpty())) {
+                data += "\"text\": {\n\"content\":\"" + text.value + "\" },"; 
+            }
             if (checked.length > 0) {
                 console.log("checked elements:\n" + checked);
                 for (var i = 0; i < checked.length; i++) {
-                    data += "{\n\"name\": \"" + checked[i].value + "\",\n\"color\": \"" + checked[i].getAttribute("data-color") + "\"}";
+                    data += "\"var" + i + "\": {\n\"name\": \"" + checked[i].value + "\",\n\"color\": \"" + checked[i].getAttribute("data-color") + "\"}";
                     if (i != checked.length-1) {
                         data += ",\n";
                     }
@@ -118,6 +122,10 @@
     <section id="stuff">
         <div id="checkboxes" class="tog">
             <p>Check all the things you like!</p>
+            <p><b>Colors:</b></p>
+            <div class="mb-3">
+                <input id="text" class="form-control" type="text" placeholder="Say something...">
+            </div>
             <p><b>Colors:</b></p>
             <div class="mb-3">
                 <div class="form-check">
