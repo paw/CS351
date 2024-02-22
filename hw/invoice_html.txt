@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<head>
+    <title>Homework #6: JS/CGI Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        body {
+            background: #ccc;
+        }
+        .rounded-left {
+            border-radius: 0px !important;
+            border-top-left-radius: .25rem !important;
+            border-bottom-left-radius: .25rem !important;
+        }
+        main.main {
+            padding: 20px;
+            display: block;
+            width: 800px;
+            max-width: 100%;
+            margin: 2em auto;
+        }
+        label.input-group-text {
+            font-weight: bold;
+            background: rgb(var(--bs-secondary-rgb),0.2);
+        }
+        #table-text {
+            width: 100%;
+            height: 4em;
+        }
+        #added {
+            margin: 20px 0;
+        }
+        #added::before {
+            margin-left: -30px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            content: 'Products Added:';
+            display: block;
+            font-size: 1.2em;
+        }
+        #added:empty::before {
+            content: 'You have not added any products.';
+            font-style: italic;
+            color: var(--bs-secondary);
+        }
+        .hide { display:none !important;}
+    </style>
+    <script>
+        
+        let USDollar = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
+        
+        //simple function to clear the product table's contents
+        function clearTable(table) {
+            table.innerHTML = '';
+        }
+
+        //fuction to compare 2 strings
+        function compareString(a, b) {
+            // localeCompare docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
+            if (a.localeCompare(b, 'en', { sensitivity: 'base' }) <= -1){
+                // a comes before b
+                return -1;
+            } else if (a.localeCompare(b, 'en', { sensitivity: 'base' }) >= 1){
+                // a comes after b
+                return 1;
+            } else {
+                // they're the same
+                return 0;
+            }
+        }
+        //Function to compare by cost
+        function compareByCost(a, b) {
+           if (parseFloat(a) < parseFloat(b)) {
+                return -1;
+           } else if (parseFloat(a) > parseFloat(b)) {
+                return 1;
+           } else {
+                return 0;
+           }
+        }
+
+        function displayOrder(table, json) {
+
+            clearTable(table);
+
+            for (var i = 0; i < json.ORDER.length; i++) {
+                var tr = document.createElement('tr');
+                tr.setAttribute("data-id",json.ORDER[i].id );
+                tr.setAttribute("data-name",json.ORDER[i].name);
+                tr.setAttribute("data-category",json.ORDER[i].category);
+                tr.setAttribute("data-cost",json.ORDER[i].cost);
+                tr.setAttribute("data-quantity",json.ORDER[i].quantity);
+
+
+                tr.innerHTML = "<td>" + json.ORDER[i].id + "</td>";
+                tr.innerHTML += "<td data-name=\"name\">" + json.ORDER[i].name + "</td>";
+                tr.innerHTML += "<td>" + json.ORDER[i].category + "</td>";
+                tr.innerHTML += "<td>" + USDollar.format(json.ORDER[i].cost) + "</td>";
+                tr.innerHTML += "<td class=\"text-end\">" + json.ORDER[i].quantity + "</td>";
+                table.appendChild(tr);
+            }
+            //sortByAttribute(table, "[data-id]");
+            document.querySelector("#subtotal").innerText = USDollar.format(json.INFO.subtotal);
+            document.querySelector("#timestamp").innerText = json.INFO.timestamp;
+            document.querySelector("#order-id").innerText = json.INFO.id;
+            document.querySelector("#invoice").classList.remove("hide");
+        }
+
+        async function sendRequest(data) {
+            const url = "/~sullivb/cgi-bin/hw/invoice.cgi";
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+            xhr.send(data);
+
+            console.log("requesting HTML from server");
+
+            xhr.onreadystatechange = function (oEvent) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        handleResponse(xhr);
+                    } else {
+                        console.log("Error", xhr.statusText);
+                    }
+                }
+            };
+        }
+
+        async function handleResponse(xhr) {
+            try {
+                var json = JSON.parse(xhr.responseText);
+            } catch(error) {
+                console.error("Order does not exist.");
+                document.querySelector("#error").classList.remove("hide");
+                return;
+            }
+            displayOrder(document.querySelector("#order tbody"), json);
+        }
+
+        async function loadInvoice(orderID) {
+            sendRequest(orderID);
+        }
+
+        function sortByAttribute(table, attr) {
+            // for most we can just compare the attribute values...
+            [...table.children]
+            .sort((a, b) => compareString(a.getAttribute(attr), b.getAttribute(attr)))
+            .forEach(node => table.appendChild(node));
+        }
+        function sortByPrice(table) {
+            // ...but in the case of cost it needs to be compared numerically
+            [...table.children]
+            .sort((a, b) => compareByCost(a.getAttribute("data-cost"), b.getAttribute("data-cost")))
+            .forEach(node => table.appendChild(node));
+        }
+
+        function getInvoice() {
+            var orderID = document.querySelector("#order-id-input").value;
+            window.location.href = "/~sullivb/hw/invoice.html?order=" + orderID;
+        }
+
+        function pageLoad() {
+
+            var url = new URL(window.location.href);
+            var params = new URLSearchParams(url.search);
+
+            if (params.has("order")) {
+                console.log ("Order ID found!");
+                loadInvoice(params.get("order"));
+            } else {
+                console.log ("No Order ID found");
+                document.querySelector("#generate").classList.remove("hide");
+            }
+            
+            document.getElementById("get-order").addEventListener("click", function() { getInvoice() });
+            document.querySelectorAll("button").forEach((element) => element.disabled = false );
+        }
+        
+        // Call our async function when the DOM is ready.
+        document.addEventListener("DOMContentLoaded", function() {
+            pageLoad();
+        });
+
+    </script>
+</head>
+<body lang="en">
+    <main class="main container mt-2 mb-2 py-3 px-4 bg-light text-dark rounded">
+    <h1 style="font-weight: bold;"><img src="../img/acme.png" alt="Acme Logo" style="vertical-align: bottom;"> Warehouse</h1>
+    <p>View Your Invoice</p>
+    <hr>
+    <section id="table">
+        <section id="generate" class="hide">
+            <h2>View Order</h2>
+            <p>Please enter your order number to retrieve your invoice.</p>
+            <input class="form-control form-control-lg" type="text" id="order-id-input" placeholder="Order ID">
+            <div id="gen-invoice" class="mt-3">
+                <button id="get-order" class="btn btn-primary m-1" disabled>View Order</button>    
+            </div>
+        </section>
+        <section id="invoice" class="hide">
+            <h2><b>Order:</b> <span id="order-id"></span></h2>
+            <p><b>Order Placed on:</b> <span id="timestamp"></span></p>
+            <p>These are the products and quantities you ordered:</p>
+            <table id="order" class="table border mt-2">
+                <thead class="table-dark thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Amount Ordered</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <h3 class="text-end">Total: <b id="subtotal"></b></h3>
+        </section>
+        <div id="error" class="hide alert alert-danger">
+            <h1 style="width: 100%;">Order not found.</h1>
+            <p class="mr-3">Please <a href="/~sullivb/hw/invoice.html">click here</a> to try again.</p>
+        </div>
+    </section>
+    </main>
+</body>
