@@ -39,3 +39,4 @@ ______
 - [XML post req](https://code.tutsplus.com/create-a-javascript-ajax-post-request-with-and-without-jquery--cms-39195a)
 - https://www.perlmonks.org/?node_id=651544
 - [JSON](https://metacpan.org/pod/JSON), [Data::Dumper](https://metacpan.org/pod/Data::Dumper), [Data::Diver](https://metacpan.org/pod/Data::Diver)
+- [CGI::Tiny](https://metacpan.org/pod/CGI::Tiny#COMPARISON-TO-CGI.PM)
