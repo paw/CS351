@@ -1,0 +1,23 @@
+{
+   "ORDER" : [
+      {
+         "cost" : "8.50",
+         "id" : "H-002",
+         "quantity" : "3",
+         "name" : "Adult Multivitamins (150ct)",
+         "category" : "Health"
+      },
+      {
+         "category" : "Health",
+         "cost" : "7.50",
+         "id" : "H-003",
+         "quantity" : "6",
+         "name" : "Child Multivitamins (100ct)"
+      }
+   ],
+   "INFO" : {
+      "id" : "ba453ebf-07a0-4fcf-2389-77e1182ebf22",
+      "timestamp" : "Thu Feb 22 12:15:43 2024",
+      "subtotal" : "70.50"
+   }
+}

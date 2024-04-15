@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "author": "scott",
+      "category": "education",
+      "content": "professor peabody is cool"
+    },
+    {
+      "id": 2,
+      "author": "scott",
+      "category": "hiking",
+      "content": "lorem ipsum mountains"
+    }
+  ]
+}

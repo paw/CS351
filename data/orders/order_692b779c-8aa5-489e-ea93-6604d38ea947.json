@@ -1,0 +1,23 @@
+{
+   "INFO" : {
+      "timestamp" : "Thu Feb 22 17:01:02 2024",
+      "subtotal" : "48.49",
+      "id" : "692b779c-8aa5-489e-ea93-6604d38ea947"
+   },
+   "ORDER" : [
+      {
+         "category" : "Health",
+         "quantity" : "1",
+         "id" : "H-001",
+         "name" : "Advil (100ct)",
+         "cost" : "10.99"
+      },
+      {
+         "cost" : "7.50",
+         "name" : "Child Multivitamins (100ct)",
+         "id" : "H-003",
+         "quantity" : "5",
+         "category" : "Health"
+      }
+   ]
+}

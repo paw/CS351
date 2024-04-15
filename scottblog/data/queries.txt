@@ -1,0 +1,9 @@
+SELECT pt1.author,
+pt1.body,
+pt1.topic,
+STRFTIME('%m/%d/%Y @ %H:%M', pt1.created) AS created_formatted 
+FROM posts pt1 LEFT JOIN posts pt2
+ ON (pt1.topic = pt2.topic AND pt1.rowid < pt2.rowid)
+WHERE pt2.rowid IS NULL
+order by pt1.topic asc;
+

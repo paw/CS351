@@ -1,0 +1,30 @@
+{
+   "ORDER" : [
+      {
+         "id" : "H-001",
+         "cost" : "10.99",
+         "quantity" : "3",
+         "category" : "Health",
+         "name" : "Advil (100ct)"
+      },
+      {
+         "cost" : "8.50",
+         "quantity" : "2",
+         "id" : "H-002",
+         "category" : "Health",
+         "name" : "Adult Multivitamins (150ct)"
+      },
+      {
+         "name" : "Child Multivitamins (100ct)",
+         "id" : "H-003",
+         "cost" : "7.50",
+         "quantity" : "1",
+         "category" : "Health"
+      }
+   ],
+   "INFO" : {
+      "subtotal" : "57.47",
+      "id" : "07547d85-d0e4-4dd3-b868-c328893e49fc",
+      "timestamp" : "Thu Feb 22 16:01:57 2024"
+   }
+}

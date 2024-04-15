@@ -1,0 +1,16 @@
+{
+   "ORDER" : [
+      {
+         "name" : "Purina Pro Plan Dog Food (35lb Bag)",
+         "quantity" : "9",
+         "id" : "P-001",
+         "category" : "Pets",
+         "cost" : "44.00"
+      }
+   ],
+   "INFO" : {
+      "subtotal" : "396.00",
+      "timestamp" : "Sat Feb 24 09:37:12 2024",
+      "id" : "00fdbbcf-d58c-476f-d970-7080965aafe2"
+   }
+}

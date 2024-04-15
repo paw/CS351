@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>COLORS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=yes">
+    <link rel="preload" href="../fonts/ParcPlace.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../fonts/FairfaxHD.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+
+    <style>
+    body {
+    background: #ccc;
+    font-family: verdana;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s color, 0.3s background-color;
+    }
+    button {
+    font-size: 1em;
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: 0.5em;
+    }
+    .red .fave {
+    background: #d82947;
+    border-color: #cc0030;
+    color: #fff;
+    }
+    .red {
+    background: #732929;
+    color: #ffe6e6;
+    }
+    .blue {
+    background: #253b93;
+    color: #c2e8ff;
+    }
+    .blue .fave {
+    background: #86dbef;
+    border-color: #5aaeec;
+    color: #0b175b;
+    }
+    .yellow {
+    background: #eac947/*#ffcc00*/;
+    color: #433c0a;
+    }
+    .yellow .fave {
+    background: #fee5ac;
+    border-color: #cca01a;
+    color: #7b5600;
+    }
+    .orange {
+    background: #e67300;
+    color: #fff7e6;
+    }
+    .orange .fave {
+    background: #ffc049;
+    border-color: #ffdfbc;
+    color: #592e02;
+    }
+    .green {
+    background: #375427;
+    color: #d4fd97;
+    }
+    .green .fave {
+    background: #66ff69;
+    border-color: #ccff5b;
+    color: #0c6a1a;
+    }
+    .pink {
+    background: #efabbb;
+    color: #711a42;
+    }
+    .pink .fave {
+    background: #d15c93;
+    border-color: #ff90b4;
+    color: #ffeaf3;
+    }
+    .purple {
+    background: #734185;
+    color: #e1e3ff;
+    }
+    .purple .fave {
+    background: #550f85;
+    border-color: #6838d0;
+    color: #d9b6f2;
+    }
+    .black {
+    background: #111;
+    color: #f1f1f1;
+    }
+    .black .fave {
+    background: #222;
+    border-color: #444;
+    color: #fff;
+    }
+    .white {
+    background: #f1f1f1;
+    color: #111;
+    }
+    .white .fave {
+    background: #fff;
+    border-color: #ccc;
+    color: #999;
+    }
+    .hide {
+    display: none !important;
+    }
+    </style>
+</head>
+<body>
+    <p id="cookie" class="hide">I remembered your favorite color! It was <span id="color">COLOR</span>, right?</p>
+    <p>Pick your favorite color:</p>
+    <button id="red">RED</button>
+    <button id="blue">BLUE</button>
+    <button id="yellow">YELLOW</button>
+    <button id="orange">ORANGE</button>
+    <button id="green">GREEN</button>
+    <button id="pink">PINK</button>
+    <button id="purple">PURPLE</button>
+    <button id="black">BLACK</button>
+    <button id="white">WHITE</button>
+    <p id="ok" class="hide">Nice choice!</p>
+
+    <script>
+        function updateCookie(color) {
+  console.log("cookie: " + color);
+  setCookie("color", color, 30);
+}
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=None;path=/;";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  let color = getCookie("color");
+  if (color != "") {
+    document.querySelector("#cookie").classList.remove("hide");
+    document.querySelector("#color").innerText = color;
+    document.body.classList = color;
+  }
+}
+
+function pageLoad() {
+  checkCookie();
+     var div_list = document.querySelectorAll('button'); // returns NodeList
+var buttons = [...div_list]; // converts NodeList to Array
+buttons.forEach(e => {
+e.addEventListener("click", function() { updateCookie(e.id), document.body.classList = e.id;
+document.querySelector("#ok").classList.remove("hide");
+ document.querySelectorAll(".fave").forEach(f => { f.classList.remove("fave")});                                       e.classList.add("fave");                                       });
+});
+    
+}
+
+// Call our function when the DOM is ready.
+document.addEventListener("DOMContentLoaded", function() {
+    pageLoad();
+});
+</script>
+</body>
+</html>

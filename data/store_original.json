@@ -1,0 +1,110 @@
+{
+  "categories" : [
+    "Food",
+    "Clothing",
+    "Pets",
+    "Health"
+  ],
+    "products": [
+      {
+        "id": "F-001",
+        "name": "Apple",
+        "cost": 1.68,
+        "quantity": 55,
+        "category": "Food",
+        "variety": "Honeycrisp",
+        "organic" : false
+      },
+      {
+        "id": "F-002",
+        "name": "Apple",
+        "cost": 1.16,
+        "quantity": 81,
+        "category": "Food",
+        "variety": "Granny Smith",
+        "organic" : false
+      },
+      {
+        "id": "F-003",
+        "name": "Banana",
+        "cost": 0.15,
+        "quantity": 106,
+        "category": "Food",
+        "organic" : false
+      },
+      {
+        "id": "F-004",
+        "name": "Banana",
+        "cost": 1.78,
+        "quantity": 75,
+        "category": "Food",
+        "organic" : true
+      },
+      {
+        "id": "C-001",
+        "name": "Raglan T-Shirt (B&W)",
+        "cost": 9.00,
+        "quantity": 35,
+        "category": "Clothing",
+        "colors": "black & white, red & blue, brown & beige"
+      },
+      {
+        "id": "C-002",
+        "name": "Longsleeve T-Shirt",
+        "cost": 10.00,
+        "quantity": 25,
+        "category": "Clothing",
+        "colors": "grey, beige, white, black"
+      },
+      {
+        "id": "C-003",
+        "name": "Polo",
+        "cost": 9.00,
+        "quantity": 30,
+        "category": "Clothing",
+        "colors": "beige, purple, red, green, yellow, orange, pink, white, black"
+      },
+      {
+        "id": "P-001",
+        "name": "Purina Pro Plan Dog Food (35lb Bag)",
+        "cost": 44.00,
+        "quantity": 29,
+        "category": "Pets",
+        "flavors": "Lamb & Beef, Chicken & Rice",
+        "animals": "Large Breed Dogs, Medium Breed Dogs"
+      },
+      {
+        "id": "P-002",
+        "name": "Purina Pro Plan Dog Food (15lb Bag)",
+        "cost": 25.00,
+        "quantity": 15,
+        "category": "Pets",
+        "flavors": "Chicken & Rice",
+        "animals": "Large Breed Dogs, Medium Breed Dogs"
+      },
+      {
+        "id": "P-003",
+        "name": "Purina Fancy Feast Flaked Wet Cat Food - 3oz Can",
+        "cost": 0.89,
+        "quantity": 18,
+        "category": "Pets",
+        "animals": "Cats",
+        "flavors": "Chicken & Tuna, Fish & Shrimp, Trout, Tuna"
+      },
+      {
+        "id": "C-004",
+        "name": "Sunglasses",
+        "cost": 2.50,
+        "quantity": 7,
+        "category": "Clothing",
+        "colors": "beige"
+      },
+      {
+        "id": "H-001",
+        "name": "Advil (100ct)",
+        "cost": 10.99,
+        "quantity": 14,
+        "category": "Health"
+      }
+    ]
+  }

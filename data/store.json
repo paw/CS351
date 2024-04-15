@@ -1,0 +1,132 @@
+{
+   "categories" : [
+      "Food",
+      "Clothing",
+      "Pets",
+      "Health"
+   ],
+   "products" : [
+      {
+         "id" : "F-001",
+         "name" : "Apple",
+         "category" : "Food",
+         "variety" : "Honeycrisp",
+         "quantity" : 55,
+         "organic" : false,
+         "cost" : 1.68
+      },
+      {
+         "id" : "F-002",
+         "name" : "Apple",
+         "variety" : "Granny Smith",
+         "category" : "Food",
+         "quantity" : 81,
+         "organic" : false,
+         "cost" : 1.16
+      },
+      {
+         "id" : "F-003",
+         "name" : "Banana",
+         "category" : "Food",
+         "organic" : false,
+         "quantity" : 106,
+         "cost" : 0.15
+      },
+      {
+         "organic" : true,
+         "quantity" : 75,
+         "cost" : 1.78,
+         "id" : "F-004",
+         "name" : "Banana",
+         "category" : "Food"
+      },
+      {
+         "category" : "Food",
+         "name" : "Peanut Butter (15oz)",
+         "cost" : 1.49,
+         "organic" : false,
+         "quantity" : 33,
+         "id" : "F-005"
+      },
+      {
+         "colors" : "black & white, red & blue, brown & beige",
+         "cost" : 9,
+         "name" : "Raglan T-Shirt",
+         "category" : "Clothing",
+         "id" : "C-001",
+         "quantity" : 35
+      },
+      {
+         "name" : "Longsleeve T-Shirt",
+         "category" : "Clothing",
+         "id" : "C-002",
+         "colors" : "grey, beige, white, black",
+         "cost" : 10,
+         "quantity" : 20
+      },
+      {
+         "category" : "Clothing",
+         "name" : "Polo",
+         "id" : "C-003",
+         "colors" : "beige, purple, red, green, yellow, orange, pink, white, black",
+         "cost" : 9,
+         "quantity" : 30
+      },
+      {
+         "flavors" : "Lamb & Beef, Chicken & Rice",
+         "id" : "P-001",
+         "name" : "Purina Pro Plan Dog Food (35lb Bag)",
+         "category" : "Pets",
+         "animals" : "Large Breed Dogs, Medium Breed Dogs",
+         "quantity" : 20,
+         "cost" : 44
+      },
+      {
+         "flavors" : "Chicken & Rice",
+         "name" : "Purina Pro Plan Dog Food (15lb Bag)",
+         "category" : "Pets",
+         "id" : "P-002",
+         "cost" : 25,
+         "animals" : "Large Breed Dogs, Medium Breed Dogs",
+         "quantity" : 14
+      },
+      {
+         "category" : "Pets",
+         "name" : "Purina Fancy Feast Flaked Wet Cat Food - 3oz Can",
+         "id" : "P-003",
+         "flavors" : "Chicken & Tuna, Fish & Shrimp, Trout, Tuna",
+         "cost" : 0.89,
+         "quantity" : 15,
+         "animals" : "Cats"
+      },
+      {
+         "colors" : "beige",
+         "id" : "C-004",
+         "name" : "Sunglasses",
+         "category" : "Clothing",
+         "quantity" : 5,
+         "cost" : 2.5
+      },
+      {
+         "quantity" : 10,
+         "id" : "H-001",
+         "category" : "Health",
+         "cost" : 10.99,
+         "name" : "Advil (100ct)"
+      },
+      {
+         "id" : "H-002",
+         "quantity" : 70,
+         "name" : "Adult Multivitamins (150ct)",
+         "cost" : 8.5,
+         "category" : "Health"
+      },
+      {
+         "id" : "H-003",
+         "quantity" : 140,
+         "name" : "Child Multivitamins (100ct)",
+         "cost" : 7.5,
+         "category" : "Health"
+      }
+   ]
+}

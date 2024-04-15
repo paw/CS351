@@ -1,0 +1,23 @@
+{
+   "ORDER" : [
+      {
+         "cost" : "10.00",
+         "id" : "C-002",
+         "name" : "Longsleeve T-Shirt",
+         "quantity" : "1",
+         "category" : "Clothing"
+      },
+      {
+         "cost" : "2.50",
+         "id" : "C-004",
+         "quantity" : "1",
+         "name" : "Sunglasses",
+         "category" : "Clothing"
+      }
+   ],
+   "INFO" : {
+      "timestamp" : "Thu Feb 22 11:41:06 2024",
+      "id" : "21ca351c-e289-4b26-62dd-c8c0eba62496",
+      "subtotal" : "12.50"
+   }
+}
