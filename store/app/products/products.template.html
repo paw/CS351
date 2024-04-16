@@ -1,0 +1,25 @@
+<section id="order-form" class="hide">
+    <h2>Select Product(s) to Order</h2>
+    <p>Showing all products in category: <b id="category-picked"></b>.</p>
+    <p>To order an item, select a quantity above 0 and click the button to proceed.</p>
+    <div class="table-wrap">
+        <table id="form-products" class="table border mt-2">
+            <thead class="table-dark thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Additional Information</th>
+                    <th>Quantity Available</th>
+                    <th>Order Amount</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div id="order-buttons" class="d-flex justify-content-between">
+        <button id="order-proceed" class="btn btn-success m-1">Proceed to Order</button>
+        <button id="restart" data-btn="reset" class="btn btn-secondary m-1" style="order: -1;">Choose Another Category</button>
+    </div>
+</section>

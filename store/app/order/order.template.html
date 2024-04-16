@@ -1,0 +1,31 @@
+<section id="order-invoice" class="hide">
+    <h2>Review Invoice and Confirm</h2>
+    <p>These are the products and quantities you wish to order:</p>
+    <div class="table-wrap">
+        <table id="confirm-products" class="table border mt-2">
+            <thead class="table-dark thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Additional Information</th>
+                    <th>Quantity Available</th>
+                    <th>Amount Ordered</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <h3>Your order subtotal is <b id="subtotal"></b>.</h3>
+    <p>If you wish to proceed with the order, please confirm by pressing the button below:</p>
+    <div id="confirm-buttons" class="d-flex justify-content-between">
+        <button id="order-confirm" class="btn btn-success m-1">Confirm Order</button>
+        <button id="reset" data-btn="reset" class="btn btn-primary m-1" style="order: -1;">Place Another Order</button>
+    </div>
+<div id="thanks" class="hide alert alert-success mt-2">
+    <h1 style="width: 100%;">Thanks for your order!</h1>
+    <div class="spinner-border text-success" role="status" style="float:left;">
+    </div><p class="mr-3" style="padding-left: 3rem;">Processing your order, please do not refresh the page...</p>
+</div>
+</section>
