@@ -3,8 +3,7 @@
 use strict;
 use warnings;
 use CGI;
-use lib '../../cgi-bin/perl/'; #my local perl install
-#use Sanitize;
+#use lib '../../cgi-bin/perl/';
 
 BEGIN {
    open (STDERR, ">&STDOUT");
@@ -19,9 +18,9 @@ my $filename = '../data/log.txt';
 # create a CGI object (query) for use
 my $q = CGI->new;
 my $postraw = $q->param('POSTDATA') or die "PERMISSION DENIED.";
-#my $sanitized = sanitize($postraw, html => 1);
 
-# open products FILE & store our stuff
+# open log FILE & store our stuff. if it doesn't exist, it'll get created
+# the data directory must have have 777 perms bc www-data can't create the log file otherwise
 open(my $logfile, '>>', $filename) or die "OPENING $filename: $!\n";
 print $logfile $postraw . " @ " . localtime(time) . "\n";
 close $logfile;

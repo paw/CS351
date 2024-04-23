@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use CGI;
-use lib '../../cgi-bin/perl/';
+#use lib '../../cgi-bin/perl/';
 use JSON;
 use DBI;
 
@@ -19,7 +19,7 @@ BEGIN {
 my $q = CGI->new;
 my $postraw = $q->param('POSTDATA') or die "PERMISSION DENIED.";
 
-# https://stackoverflow.com/a/2877189 <- char thing
+# https://stackoverflow.com/a/2877189 <- cool perl thing: you can use any char as a delimiter to indicate strings
 # query is for the the most recent post in each topic category
 my $query = qq{
 SELECT
@@ -40,20 +40,23 @@ my $dbfile = '../data/scottblog.db';
 my $dbh = DBI->connect("dbi:SQLite:dbname=$dbfile","","") or die "db fail";
 
 #prepare & execute command
-my $sth = $dbh->prepare( $query );
+my $sth = $dbh->prepare( $query ); #run the query from the perl var
 my $rv = $sth->execute() or die $DBI::errstr;
 
 if($rv < 0) {
    print $DBI::errstr;
 }
 
-# decode JSON from POST
+# time to build our JSON
 my $json = JSON->new->allow_nonref;
-my $data = "{ \"posts\" : [] }"; #create our basic JSON structure in string
-my $hash = $json->decode( $data );  #converts to a hash that the JSON module can use
+#create our basic JSON structure in a string
+my $data = "{ \"posts\" : [] }";
+#JSON module converts our string to a hash that the JSON module can manipulate and turn back into a string
+my $hash = $json->decode( $data );
 
 #here we store unnamed objects containing our post data in the posts array
-my $i = 0;
+my $i = 0; #count to keep track of array index
+#loop through every row in our query and store in our hash
 while(my @row = $sth->fetchrow_array()) {
       my $body = $row[3];
       my $author = $row[2];
@@ -65,10 +68,11 @@ while(my @row = $sth->fetchrow_array()) {
       $i++;
 }
 
-#we send back a pretty formatted json string that we can convert into a json object in our javascript
+#convert our hash into a pretty formatted json string containing array of our posts
 my $json_text = JSON->new->pretty->encode($hash) or die "json problems";
 
-print $json_text; #returning our json
+#send the JSON back as response text to our javascript
+print $json_text;
 
 #don't forget to disconnect! :)
 $dbh->disconnect();

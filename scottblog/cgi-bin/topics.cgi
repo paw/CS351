@@ -3,8 +3,7 @@
 use strict;
 use warnings;
 use CGI;
-use lib '../../cgi-bin/perl/';
-#use local::lib;
+#use lib '../../cgi-bin/perl/';
 use DBI;
 
 BEGIN {
@@ -34,6 +33,8 @@ if($rv < 0) {
    print $DBI::errstr;
 }
 
+#manually building my JSON string to send.
+# cannot recommend this method lOL
 my $decode = "{ \"topics\" : [";
 
 while(my @row = $sth->fetchrow_array()) {

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>HW #10 - Leaflet.js</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+	<style>
+        * {
+            box-sizing: border-box;
+        }
+		html, body {
+			height: 100%;
+			margin: 0;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background: #b6b6b6;
+		}
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #content {
+            display: block;
+            width: 600px;
+            max-width: 100%;
+            padding: 0.5em;
+            position: relative;
+            z-index: 2;
+            background: #fff;
+            margin: 0.5em;
+            border-radius: 5px;
+            border: 2px solid #888;
+        }
+		.leaflet-container {
+			height: 400px;
+			width: 600px;
+			max-width: 100%;
+			max-height: 100%;
+            display: block;
+            margin: 1em auto;
+		}
+        #map {
+            width: 600px;
+            height: 400px;
+            max-width: 100%;
+            margin: 1em 0;
+            position: sticky;
+            top: 1em;
+            z-index: 5;
+            border-radius: 0.5em;
+            border: 2px solid #888;
+        }
+        .poi-list > div {
+            display: flex;
+        }
+        .title {
+            width: 30%;
+        }
+        .latitude, .longitude {
+            width: 25%;
+        }
+        .activeinactive { width: 12%; }
+        .remover, .viewer { width: auto;flex-grow: 1; }
+        .titlebar div, .poi div {
+            padding: 0.2em;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-align: center;
+            vertical-align: middle;
+            display: inline;
+        }
+        .titlebar div {
+            overflow: visible;
+        }
+        .poi-list {
+            border: 2px solid #111;
+            border-radius: 0.5em;
+            overflow: hidden;
+            background: #fff;
+        }
+        .poi-list .titlebar {
+            background: #111;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .input {
+            background: #eee;
+            padding: 0.5em;
+            border-radius: 0.4em;
+            display: inline-block;
+            margin: 0 auto 0.5em;
+        }
+        .input label {
+            font-weight: bold;
+        }
+        .input input {
+            margin-left: 0.5em;
+        }
+        .poi:nth-child(odd) > div:nth-child(odd) {
+            background: #eee;
+        }
+        .poi:nth-child(even) > div:nth-child(even) {
+            background: #eee;
+        }
+        .leaflet-popup-content {
+            text-align: center;
+        }
+        button {
+            background: #e1e1e1;
+            border: 2px solid #888;
+            padding: 0.1em;
+            border-radius: 0.5em;
+            transition: 0.3s background;
+        }
+        button:hover {
+            background: #d3e3d3;
+        }
+        .viewer button, .remover button {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            padding: none;
+            cursor: pointer;
+            transition: 0.3s color;
+        }
+        .viewer button:hover, .viewer button:focus {
+            color: #007e14;
+        }
+        .remover button {
+            color: #931717;
+        }
+        .remover button:hover, .remover button:focus {
+            color: red;
+        }
+        h1 {
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        h2 {
+            font-size: 1.3em;
+        }
+        #add {
+            font-size: 1.2em;
+            display: block;
+            padding: 0.5em;
+            width: 300px;
+            max-width: 100%;
+            margin: 0 auto;
+            float:right;
+        }
+        #add::before {
+            content: '';
+            height: 2px;
+            width: 100%;
+            display: block;
+            background: #888;
+            position: absolute;
+            left: 0;
+            margin-top: 0.5em;
+            z-index: -1;
+        }
+        .block {
+            display: block;
+        }
+        .clear {
+            clear: both;
+        }
+	</style>
+
+	
+</head>
+<body>
+
+
+
+<main>
+    
+    <div style="max-width:100%;"><div id="map"></div></div>
+
+    <section id="content">
+        <h1>Briar's Leaflet.js App</h1>
+        <p>Click anywhere on the map to automatically get a point's latitude and longitude or input your own manually, title your POI, and add it to the map. Have fun visiting all the places!</p>
+        <span class="input block"><label for="marker-name">POI Name:</label><input id="marker-name" placeholder="Name your POI..." /></span>
+        <span class="input"><label for="latitude">Latitude:</label><input id="latitude" placeholder="Latitude" type="number" /></span>
+        <span class="input"><label for="longitude">Longitude:</label><input id="longitude" placeholder="Longitude" type="number" /></span><br/>
+        <button id="add">Add To Map</button>
+
+        <h2 class="clear">My POIs</h2>
+        <div id="my-pois" class="poi-list">
+            <div class="titlebar">
+                <div class="title">Title</div>
+                <div class="latitude">Latitude</div>
+                <div class="longitude">Longitude</div>
+                <div class="viewer"></div>
+            </div>
+        </div>
+        <h2>Your POIs</h2>
+        <div id="your-pois" class="poi-list">
+            <div class="titlebar">
+                <div class="title">Title</div>
+                <div class="latitude">Latitude</div>
+                <div class="longitude">Longitude</div>
+                <div class="activeinactive">Active?</div>
+                <div class="viewer"></div>
+                <div class="remover"></div>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+
+    //node we're gonna clone and manipulate later in the code
+    const template = document.createElement('div');
+    template.classList = "poi";
+    template.innerHTML = `
+            <div class="title"></div>
+            <div class="latitude"></div>
+            <div class="longitude"></div>
+            <div class="activeinactive"><input type="checkbox" class="toggler" checked="checked"></div>
+            <div class="viewer"><button aria-label="Jump to point of interest.">👁</button></div>
+            <div class="remover"><button aria-label="Remove point of interest from the map.">✖</button></div>
+        </div>
+    `;
+
+    //leaflet map constants
+	const map = L.map('map', {
+        center: [43.134, -75.229],
+        zoom: 13
+    });
+    const popup = L.popup();
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+    //custom icon for active marker
+    const activeIcon = L.icon({
+        iconUrl: '../img/marker-active.png',
+        iconSize: [25, 41],
+        iconAnchor: [15, 22],
+        popupAnchor: [-2, -13],
+        shadowUrl: '../img/marker-shadow.png',
+        shadowSize: [25, 41],
+        shadowAnchor: [10, 22]
+    });
+    //custom icon for inactive marker
+    const inactiveIcon = L.icon({
+        iconUrl: '../img/marker-inactive.png',
+        iconSize: [25, 41],
+        iconAnchor: [15, 22],
+        popupAnchor: [-2, -13],
+        shadowUrl: '../img/marker-shadow.png',
+        shadowSize: [25, 41],
+        shadowAnchor: [10, 22]
+    });
+
+    // my POIs
+    const syracuse = L.marker([43.088947, -76.154480]).addTo(map).bindPopup('<b>Syracuse</b><br>[43.088947, -76.154480]');
+    const denver = L.marker([39.742043, -104.991531]).addTo(map).bindPopup('<b>Denver</b><br>[39.742043, -104.991531]');
+    const sacramento = L.marker([38.575764, -121.478851]).addTo(map).bindPopup('<b>Sacramento</b><br>[38.575764, -121.478851]');
+    const funknwaffles = L.marker([43.04848809811718, -76.15322708777246]).addTo(map).bindPopup('<b>Funk \'n Waffles</b><br>[43.04848809811718, -76.15322708777246]');
+    const destiny = L.marker([43.06985121128846, -76.17324164544205]).addTo(map).bindPopup('<b>Destiny USA</b><br>[43.06985121128846, -76.17324164544205]');
+    const dennys = L.marker([43.109948745313055, -75.21791165149327]).addTo(map).bindPopup('<b>Denny\'s</b><br/>Utica, NY<br>[43.109948745313055, -75.21791165149327]');
+    const sunypoly = L.marker([43.137696, -75.229689]).addTo(map).bindPopup('<b>SUNY Poly</b><br>[43.088947, -76.154480]').openPopup();
+    
+    //add my pois to a div on the page so you can pan to them with the click of a button
+    var myPoints = document.querySelector("#my-pois");
+    myPoints.appendChild(addPOI(sunypoly,"SUNY Poly",false));
+    myPoints.appendChild(addPOI(syracuse,"Syracuse",false));
+    myPoints.appendChild(addPOI(sacramento,"Sacramento",false));
+    myPoints.appendChild(addPOI(denver,"Denver",false));//
+    myPoints.appendChild(addPOI(funknwaffles,"Funk \'n Waffles",false));
+    myPoints.appendChild(addPOI(dennys,"Utica's Surprisingly Good Denny's",false));
+    myPoints.appendChild(addPOI(destiny,"Destiny USA",false));
+
+    //fn to display a tooltip containing the lat/long of the point clicked and automatically fill those in to the lat/long inputs
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent(`[<b>${e.latlng.lat}</b>, <b>${e.latlng.lng}</b>]`)
+			.openOn(map);
+        document.getElementById("latitude").value = e.latlng.lat;
+        document.getElementById("longitude").value = e.latlng.lng;
+        document.querySelector("#marker-name").focus();
+	}
+
+    // fn for input validation when adding marker
+    function checkInputs() {
+        if (document.querySelector("#latitude").value.length == 0 || document.querySelector("#longitude").value.length == 0) {
+            alert("You must provide both a Latitude and Longitude value.");
+        } else if (document.querySelector("#marker-name").value == "") {
+            alert("Please name your POI.");
+            document.querySelector("#marker-name").focus();
+        } else {
+            createMarker(document.querySelector("#marker-name").value, document.querySelector("#latitude").value, document.querySelector("#longitude").value);
+        }
+    }
+
+    // Used to add a marker on the map to a div containing list of points with controls.
+    // Returns a modified clone of the template created at the top of the script to make life a little easier and so we can append it to whatever parent element we want.
+    // removeable lets me display my POIs without letting the user remove them >:)
+    function addPOI(marker, title, removeable) {
+        var clone = template.cloneNode(true);
+        clone.querySelector(".title").innerText = title;
+        clone.querySelector(".latitude").innerText = marker.getLatLng().lat;
+        clone.querySelector(".longitude").innerText = marker.getLatLng().lng;
+        clone.querySelector(".viewer button").addEventListener('click', function() { map.flyTo(marker.getLatLng(), 13, {duration: "2.5"});marker.openPopup(); });
+        if (removeable == true) {
+            clone.querySelector(".toggler").addEventListener('click', function() { toggleIcon(this, marker) });
+            clone.querySelector(".remover button").addEventListener('click', function() { deleteMarker(clone, marker) });
+        } else {
+            clone.querySelector(".remover").remove();
+            clone.querySelector(".activeinactive").remove();
+        }
+        return clone;
+    }
+
+    //create a marker from user input & reset the inputs
+    function createMarker(title, lat, long) {
+        var marker = L.marker([lat, long], {icon: activeIcon}).addTo(map).bindPopup('<b>' + title + '</b><br>[' + lat + ", " + long + "]").openPopup();
+        document.querySelector("#your-pois").appendChild(addPOI(marker, title, true));
+        clear();
+    }
+
+    //fn to delete an exisiting marker from the map
+    function deleteMarker(clone, marker) {
+        if (confirm("Are you sure you want to remove the marker for \'" + clone.querySelector(".title").innerText + "\'?")) {
+            marker.remove();
+            clone.remove();
+        }
+    }
+
+    //fn to toggle the icon of a marker between an active or inactive state
+    function toggleIcon(checkbox, marker) {
+        if (checkbox.checked == true) {
+            marker.setIcon(activeIcon);
+            marker.setOpacity(1);
+        } else {
+            marker.setIcon(inactiveIcon);
+            marker.setOpacity(0.5);
+        }
+    }
+
+    //fn to clear user inputs
+    function clear() {
+        document.getElementById("latitude").value = '';
+        document.getElementById("longitude").value = '';
+        document.querySelector("#marker-name").value = '';
+    }
+
+    //establish map onclick
+	map.on('click', onMapClick);
+    //set up event listener for button to add
+    document.querySelector("#add").addEventListener('click', function() { checkInputs() });
+    // call the clear fn on pageload so stuff isn't saved between refreshes
+    clear();
+</script>
+</body>
+</html>

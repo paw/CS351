@@ -3,12 +3,9 @@
 use strict;
 use warnings;
 use CGI;
-use lib './perl/';
-#use local::lib;
+#use lib './perl/';
 use JSON;
 use DBI;
-use Sanitize;
-use Data::Dumper;
 
 BEGIN {
    open (STDERR, ">&STDOUT");
@@ -25,27 +22,28 @@ my $postraw = $q->param('POSTDATA') or die "PERMISSION DENIED.";
 my $json = JSON->new->allow_nonref;
 my $post = $json->decode( $postraw );
 
-#sanitize stuff
-my $author = sanitize($post->{post}->{author}, html => 1);
-my $body = sanitize($post->{post}->{body}, html => 1);
-#$author =~s/(\W)/\\$1/g; <- regexp to escape in perl but not necessary atm
+#create some vars
+my $author = $post->{post}->{author};
+my $body = $post->{post}->{body};
+my $topic = $post->{post}->{topic};
+
+#some regexp to escape in perl but not necessary atm bc i escaped already in js. leaving here bc it's interesting
+#$author =~s/(\W)/\\$1/g;
 #$body =~s/(\W)/\\$1/g;
-my $topic = sanitize($post->{post}->{topic}, number => 1);
 
 # https://stackoverflow.com/a/2877189
-# not using this method
+# not using this method but left it in in case you want to look at it
 # my $query = "INSERT INTO posts (author, body, topic) VALUES (\"". $author . "\", \"". $body . "\", " . $topic .");";
 
-
-#print "\n\nQUERY:\n\n" . $query . "\n\n";
-
+# connect to db
 my $dbfile = '../data/scottblog.db';
 my $dbh = DBI->connect("dbi:SQLite:dbname=$dbfile","","") or die "Cannot connect to DB!";
 #my $sth = $dbh->prepare( $query );
 
+# using the placehodler method for this query: https://metacpan.org/pod/DBD::SQLite#Placeholders
 my $sth = $dbh->prepare("INSERT INTO posts (author, body, topic) VALUES (:author, :body, :topic)");
 
-# Binary_data will be stored as is.
+# execute query
 my $rv = $sth->execute($author, $body, $topic) or die $DBI::errstr;
 
 if($rv < 0) {
