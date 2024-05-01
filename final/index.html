@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ 
+<head>
+    <meta charset="utf-8">
+    <title>Final: Scott's Memo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        body {
+            background: #ccc;
+        }
+        .rounded-left {
+            border-radius: 0px !important;
+            border-top-left-radius: .25rem !important;
+            border-bottom-left-radius: .25rem !important;
+        }
+        main.main {
+            padding: 20px;
+            display: block;
+            width: 800px;
+            max-width: 100%;
+            margin: 2em auto;
+        }
+        label.input-group-text {
+            font-weight: bold;
+            background: rgb(var(--bs-secondary-rgb),0.2);
+        }
+        #table-text {
+            width: 100%;
+            height: 4em;
+        }
+        #added {
+            margin: 20px 0;
+        }
+        #added::before {
+            margin-left: -30px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            content: 'Products Added:';
+            display: block;
+            font-size: 1.2em;
+        }
+        #added:empty::before {
+            content: 'You have not added any products.';
+            font-style: italic;
+            color: var(--bs-secondary);
+        }
+        #alerts {
+            position: absolute;
+            bottom: 0.5em;
+            right: 0.5em;
+            z-index: 99;
+        }
+        #alerts .alert {
+            cursor: pointer;
+        }
+        #post-form {
+            width: 700px;
+            max-width: 100%;
+            position: relative;
+        }
+        #post-form .btn-close {
+            position: absolute;
+            right: 1em;
+            top: 1em;
+            z-index: 5;
+        }
+        .modal {
+            position: fixed;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.6);
+            padding: 0 2em;
+            justify-content: center;
+        }
+        .hide { display: none !important;}
+    </style>
+</head>
+  
+<body lang="en">
+    <main class="main container mt-2 mb-2">
+    <section class="bg-light text-dark rounded py-3 px-4">
+        <h1 style="font-weight: bold;">Scott's Memo</h1>
+        <p><i><b>Utilizes:</b> Node.js/Javascript, HTML/CSS, JSON, & SQLite.</i></p>
+    </section>
+    <hr>
+    <section id="table">
+        <section id="usertab" class="d-flex justify-content-between align-items-center bg-light text-dark rounded mt-2 py-1 px-2 hide">
+            
+        </section>
+
+        <section id="posts" class="bg-light text-dark rounded py-3 px-4">
+            <h2>View Memos</h2>
+            <p>insert a name to view memos:</p>
+            <div style="display: grid; grid-template-columns: 50% 50%;">
+                <div class="form-floating">
+                    <input class="form-control form-control-lg" type="text" id="view-user" placeholder="Name">
+                    <label for="view-user">User:</label>
+                </div>
+                <div class="form-floating">
+                        <input class="form-control form-control-lg" placeholder="Number" type="number" id="view-count" min="1" step="1">
+                        <label for="view-count"># of messages to view:</label>
+                </div>
+            </div>
+                        
+          <div id="order-buttons" class="d-flex justify-content-center align-items-center">
+                <button id="new" class="btn btn-success m-1" style="margin-right: auto !important;" disabled>Create a New Memo...</button>
+                <button id="clear-view-form" data-btn="reset" class="btn btn-secondary m-1 hide" disabled>Clear</button>
+                <button id="view-memos" data-btn="reset" class="btn btn-primary m-1" disabled>View Memos</button>
+            </div>
+            <table id="memo-list" class="table border mt-2 hide">
+                <thead class="table-dark thead-dark">
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Message</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </section>
+
+        <div id="make-post" class="modal hide">
+            <section id="post-form" class="bg-light text-dark rounded py-3 px-4">
+                <h2>Add A Memo</h2>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+                <div id="post-form" class="d-flex flex-column">
+                    <div id="form-from-wrapper">
+                        <div class="form-floating">
+                            <input class="form-control form-control-lg" type="text" id="form-from" placeholder="Name">
+                            <label for="topic-select">FROM:</label>
+                        </div>
+                    </div>
+                    <div id="form-to-wrapper">
+                        <div class="form-floating">
+                            <input class="form-control form-control-lg" type="text" id="form-to" placeholder="Name">
+                            <label for="topic-select">TO:</label>
+                        </div>
+                    </div>
+                    <div id="form-content" class="mt-2 flex-grow-1">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Share your thoughts..." id="form-post-content" style="height: 100px"></textarea>
+                            <label for="form-post-content">Post Content</label>
+                        </div>
+                    </div>
+                    <div id="form-submit" class="mt-2 d-flex justify-content-end align-items-center">
+                        <button id="new-memo" class="btn btn-success m-1" disabled>Send Memo</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <section id="alerts">
+            <div id="danger" class="hide alert alert-danger"></div>
+            <div id="success" class="hide alert alert-success"></div>
+        </section>
+    </section>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        //simple function to clear the product table's contents
+        function clearTable(table) {
+            table.innerHTML = '';
+        }
+
+        function displayMemo(table, json) {
+            var tr = document.createElement('tr');
+
+            tr.innerHTML += "<td data-name=\"from\"></td>"
+            tr.querySelector("[data-name=\"from\"]").innerText = unescape(json.from);
+
+            tr.innerHTML += "<td data-name=\"to\"></td>"
+            tr.querySelector("[data-name=\"to\"]").innerText = unescape(json.to);
+
+            tr.innerHTML += "<td data-name=\"body\">";
+            tr.querySelector("[data-name=\"body\"]").innerText = unescape(json.body);
+            tr.innerHTML += "</td>";
+
+            tr.innerHTML += "<td>" + json.timestamp + "</td>";
+            table.appendChild(tr);
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function escape(s) {
+            return ('' + s)
+                .replace(/\\/g, '\\\\')
+                .replace(/\t/g, '\\t')
+                .replace(/\n/g, '\\n')
+                .replace(/\u00A0/g, '\\u00A0')
+                .replace(/&/g, '\\x26')
+                .replace(/'/g, '\\x27')
+                .replace(/"/g, '\\x22')
+                .replace(/</g, '\\x3C')
+                .replace(/>/g, '\\x3E');
+        }
+
+        function unescape(s) {
+            s = ('' + s)
+            .replace(/\\x3E/g, '>')
+            .replace(/\\x3C/g, '<')
+            .replace(/\\x22/g, '"')
+            .replace(/\\x27/g, "'")
+            .replace(/\\x26/g, '&')
+            .replace(/\\u00A0/g, '\u00A0')
+            .replace(/\\n/g, '\n')
+            .replace(/\\t/g, '\t');
+
+            return s.replace(/\\\\/g, '\\');
+        }
+
+        function showAlert(message, type) {
+            var container = document.getElementById(type).cloneNode();
+            document.getElementById("alerts").appendChild(container);
+            container.innerText = message;
+            container.classList.remove("hide");
+            container.addEventListener("click", function() { container.classList.add("hide");container.remove(); });
+            sleep(2500).then(() => { container.classList.add("hide");container.remove(); });
+        }
+
+        function toggleMemoForm() {
+            document.querySelector("#make-post").classList.toggle("hide");
+            document.querySelector("#form-from").value = "";
+            document.querySelector("#form-to").value = "";
+            document.querySelector("#form-post-content").value = "";
+            document.querySelector("#form-from").focus();
+            document.querySelector("#new-memo").disabled = true;
+        }
+
+        function pageLoad() {
+            // don't think this needs to be async anymore bc im not waiting for a .json file, but i'm not messing with it lol
+            document.querySelectorAll("button").forEach((element) => element.disabled = false );
+
+            document.querySelector("#view-user").value = "";
+            document.querySelector("#view-count").value = 1;
+
+            document.getElementById("new").addEventListener("click", function() { toggleMemoForm(); });
+            document.querySelector("#make-post .btn-close").addEventListener("click", function() { toggleMemoForm(); });
+            document.getElementById("form-post-content").addEventListener('input', () => document.getElementById("new-memo").disabled = document.getElementById("form-post-content").value === '');
+            document.getElementById("view-user").addEventListener('input', () => document.getElementById("view-memos").disabled = document.getElementById("view-user").value === '');
+        }
+
+        // Call our async function when the DOM is ready.
+        document.addEventListener("DOMContentLoaded", function() {
+            pageLoad();
+        });
+    </script>
+
+    <script>
+        var socket = io();
+        // connection with server
+        socket.on('connect', function () {
+            console.log('Connected to Server');
+        });
+ 
+        // add event listener to form
+        document.getElementById('new-memo')
+            .addEventListener('click',
+                function (e) {
+                    let postText = document.querySelector("#form-post-content");
+                    if (postText.value.length > 0 && document.querySelector("#form-from").value.length > 0 && document.querySelector("#form-to").value.length > 0) {
+                        let memoJson = { "memo" : {} };
+                        memoJson.memo.to = escape(document.querySelector("#form-from").value);
+                        memoJson.memo.from = escape(document.querySelector("#form-to").value);
+                        memoJson.memo.body = escape(postText.value);
+                        // emit message from user side
+                        socket.emit('createMemo',memoJson);
+                    } else {
+                        alert("Can't make an empty post.");
+                    }
+                });
+
+        document.getElementById('view-memos')
+            .addEventListener('click',
+                function (e) {
+                    let table = document.querySelector("#memo-list");
+                    clearTable(table.querySelector("tbody"));
+                    if (document.querySelector("#view-user").value.length > 0 && document.querySelector("#view-count").value > 0) {
+                        table.classList.remove("hide");
+                        let optionsJson = { };
+                        optionsJson.to = escape(document.querySelector("#view-user").value);
+                        optionsJson.count = document.querySelector("#view-count").value;
+                        socket.emit('viewMemos',optionsJson);
+                    } else {
+                        alert("Please input a name and a number greater than 0.")
+                    }
+                });
+
+
+        socket.on('memoCreated',
+            function (message) {
+                console.log(message);
+                toggleMemoForm();
+                showAlert("Sucessfully created memo.","success");
+            });
+        socket.on('displayMemo',
+            function (message) {
+                let table = document.querySelector("#memo-list tbody");
+                console.log(message);
+                displayMemo(table, message);
+            });
+            socket.on('noMemosFound',
+            function (message) {
+                console.log(message);
+                document.querySelector("#memo-list").classList.add("hide");
+                showAlert("No memos found.","danger");
+            });
+ 
+        // when disconnected from server
+        socket.on('disconnect', function () {
+            console.log('Disconnected from server');
+        });
+    </script>
+</body>
+ 
+</html>
