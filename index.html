@@ -403,6 +403,24 @@
         <header class="center full header h3"><h1 class="fancy parc">Briar's Stuff</h1></header>
         <section class="center full">
             <div class="grid col2">
+				<div class="grid-section">
+                    <h2 class="fancy parc">CS 330 HOMEWORK</h2>
+                    <ol class="grid col2">
+                        <li><b>Create Homepage:</b> <b class="check">✓</b> & <b>Hello World in C:</b> <a href="./hw/hello_world_c">source</a></li>
+						<li class="disabled noselect nofocus">Code Timer: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">Basic Forking: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">Process Affinity: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">Threads: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">Thread Scheduling: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">Scheduling: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">Midterm Redo: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">Virtual Memory: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">Interprocess Communication: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">IPC Pipes: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus">TC/IP: <a href="./hw/" class="disabled noselect nofocus">source</a> / <a href="./hw/" class="disabled noselect nofocus">output</a></li>
+						<li class="disabled noselect nofocus hide"></li>
+                    </ol>
+                </div>
                 <div class="grid-section">
                     <h2 class="fancy parc">CS 351 HOMEWORK</h2>
                     <ol class="grid col2">
@@ -422,6 +440,8 @@
                 <div class="grid-section">
                     <h2 class="fancy parc">LINKS TO STUFF</h2>
                     <ul class="grid col2">
+						<li><a href="/~scott/classes/CS330" target="_blank">CS330 Home Page</a></li>
+                        <li><a href="/~scott/classes/CS330/homework.html" target="_blank">CS330 Homework Guide</a></li>
                         <li><a href="/SUNY/CS351/" target="_blank">CS351 Home Directory</a></li>
                         <li><a href="/SUNY/CS351/CS351/homework.html" target="_blank">CS351 Homework Guide</a></li>
                         <li><a href="https://www.neopets.com/help/html1.phtml" rel="noreferrer" target="_blank" class="tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">It's all thanks to Neopets introducing me to HTML in the early 2000s</span>How I Started Programming</a></li>
@@ -448,16 +468,20 @@
                         <li class="disabled noselect nofocus hide"></li>
                     </ol>
                 </div>
-                <div class="grid-section">
+                <div class="grid-section full">
                     <img src="./img/cats.png" alt="Cats playing cards">
-                    <p><b class="fancy">last updated:</b> apr. 21, 2024</p>
+                    <p><b class="fancy">last updated:</b> Jan. 27, 2025</p>
                 </div>
             </div>
         </section>
         <footer class="center full footer">
             <a href="mailto:sullivb@sunypoly.edu" class="imglink tooltip" onmouseout="this.blur()" onmouseenter="document.activeElement.blur()"><span class="tooltiptext noselect" arial-role="tooltip">Email Me!</span><img src="./img/email.gif" alt="3D @ Gif"></a>
-            <p class="hide parc">&copy; Briar 2024</p>
+            <p class="parc">&copy; Briar 2024-<span id="curyear"></span></p>
         </footer>
     </main>
+	<script type="text/javascript">
+		var year = new Date().getFullYear();
+		document.getElementById("curyear").innerText = year;
+	</script>
 </body>
 </html>
